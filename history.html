@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gigimon Intelligence | Trade Tarixi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+body { background-color: #060e20; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.assistant-pulse { box-shadow: 0 0 15px rgba(59, 191, 250, 0.1); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #060e20; }
+::-webkit-scrollbar-thumb { background: #192540; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-color, #3bbffa); }
+</style>
+</head>
+<body style="background-color: #060e20; color: #dee5ff; font-family: Inter, sans-serif;">
+
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-full z-40 p-4 w-64" style="background-color: #0f1930; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(8, 74, 110, 0.1);">
+<div class="mb-10 px-4">
+<h1 class="font-headline font-extrabold text-2xl tracking-tighter" style="color: #3bbffa; font-family: Manrope, sans-serif;">Gigimon Intelligence</h1>
+<p class="text-xs mt-1" style="color: #a3aac4;">Pro Treyder</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a href="/dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a href="/add-trade.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">add_chart</span>
+Trade Qo'shish
+</a>
+<a href="/history.html" class="flex items-center gap-3 rounded-lg px-4 py-3 border-l-4 font-medium text-sm" style="background-color: #192540; color: #3bbffa; border-color: #3bbffa;">
+<span class="material-symbols-outlined">history</span>
+Trade Tarixi
+</a>
+<a href="/analytics.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">analytics</span>
+Tahlil
+</a>
+<a href="/notifications.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+                    <span class="material-symbols-outlined relative">notifications<span id="bell-badge" class="hidden absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">0</span></span>
+                    Bildirishnomalar
+                </a>
+<a href="/settings.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">settings</span>
+Sozlamalar
+</a>
+</nav>
+<div class="mt-auto space-y-4">
+<div class="p-4 rounded-xl" style="background-color: rgba(59, 191, 250, 0.1); border: 1px solid rgba(59, 191, 250, 0.2);">
+<p class="text-xs font-bold mb-2 uppercase tracking-wider" style="color: #3bbffa;">Faol Reja</p>
+<button class="w-full py-2 rounded-lg text-sm font-bold transition-colors" style="background-color: #3bbffa; color: #00374d;">Pro'ga O'tish</button>
+</div>
+<div class="space-y-1">
+<div onclick="logout()" class="flex items-center gap-3 px-4 py-3 transition-all text-sm cursor-pointer" style="color: #a3aac4;">
+<span class="material-symbols-outlined">logout</span>
+Chiqish
+</div>
+</div>
+</div>
+</aside>
+
+<header class="lg:hidden fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16" style="background-color: rgba(6, 14, 32, 0.9); backdrop-filter: blur(24px);">
+<span class="text-2xl font-black tracking-tighter" style="color: #3bbffa;">Gigimon</span>
+<div class="flex gap-4" style="color: #3bbffa;">
+<a href="/notifications.html"><span class="material-symbols-outlined">notifications</span></a>
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</header>
+
+<main class="lg:ml-64 pt-24 pb-24 px-6 md:px-10 min-h-screen">
+
+<section class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tight mb-2" style="color: white; font-family: Manrope, sans-serif;">Trade Jurnali</h1>
+<p style="color: #a3aac4;">Bozor ijrosining batafsil tarixiy tahlili.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-xl transition-colors" style="background-color: #192540; border: 1px solid rgba(64, 72, 93, 0.3); color: #dee5ff;">
+<span class="material-symbols-outlined text-lg">download</span>
+<span class="text-sm font-medium">Export CSV</span>
+</button>
+<a href="/add-trade.html" class="flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all" style="background-color: var(--accent-color, #3bbffa); color: #00374d;">
+<span class="material-symbols-outlined text-lg">add</span>
+<span class="text-sm font-bold">New Entry</span>
+</a>
+</div>
+</section>
+
+<section class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+    <div class="md:col-span-1 rounded-2xl p-5" style="background-color: #0f1930; border: 1px solid rgba(64, 72, 93, 0.1);">
+    <label class="block text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Ko'rinish</label>
+    <div class="flex items-center gap-2">
+    <button onclick="setView('active')" id="view-active" class="flex-1 py-2 text-xs font-bold rounded-lg" style="background-color: rgba(59, 191, 250, 0.1); color: var(--accent-color, #3bbffa);">Faol</button>
+    <button onclick="setView('archived')" id="view-archived" class="flex-1 py-2 text-xs font-medium rounded-lg transition-colors" style="color: #a3aac4;">Arxiv</button>
+    </div>
+    </div>
+    <div class="rounded-2xl p-5" style="background-color: #0f1930; border: 1px solid rgba(64, 72, 93, 0.1);">
+    <label class="block text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Search & Identifier</label>
+    <div class="relative">
+    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2" style="color: #a3aac4;">search</span>
+    <input id="search-input" class="w-full rounded-xl pl-10 pr-4 py-3 border-none focus:ring-2" style="background-color: #192540; color: #dee5ff;" placeholder="Trade ID, Pair, or Note keyword..." type="text"/>
+    </div>
+    </div>
+    <div class="rounded-2xl p-5" style="background-color: #0f1930; border: 1px solid rgba(64, 72, 93, 0.1);">
+    <label class="block text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Instrument</label>
+    <select id="symbol-filter" class="w-full rounded-xl px-4 py-3 border-none focus:ring-2 appearance-none" style="background-color: #192540; color: #dee5ff;">
+    <option value="">All Assets</option>
+    </select>
+    </div>
+    <div class="rounded-2xl p-5" style="background-color: #0f1930; border: 1px solid rgba(64, 72, 93, 0.1);">
+    <label class="block text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Timeframe</label>
+    <div class="flex items-center gap-2">
+    <button onclick="setTimeframe('30D')" id="btn-30d" class="flex-1 py-2 text-xs font-bold rounded-lg" style="background-color: rgba(59, 191, 250, 0.1); color: var(--accent-color, #3bbffa);">30D</button>
+    <button onclick="setTimeframe('90D')" id="btn-90d" class="flex-1 py-2 text-xs font-medium rounded-lg transition-colors" style="color: #a3aac4;">90D</button>
+    <button onclick="setTimeframe('ALL')" id="btn-all" class="flex-1 py-2 text-xs font-medium rounded-lg transition-colors" style="color: #a3aac4;">ALL</button>
+    </div>
+    </div>
+    </section>
+
+<div id="trades-list" class="space-y-4">
+<div class="text-center py-12" style="color: #a3aac4;">Loading trades...</div>
+</div>
+
+<div id="pagination" class="mt-12 flex items-center justify-center gap-2">
+</div>
+</main>
+
+<div id="cancel-modal" class="fixed inset-0 z-50 hidden items-center justify-center" style="background-color: rgba(0, 0, 0, 0.7);">
+<div class="rounded-2xl p-8 w-full max-w-lg mx-4" style="background-color: #0f1930; border: 1px solid rgba(255, 255, 255, 0.1);">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline text-xl font-bold" style="color: white; font-family: Manrope, sans-serif;">Trade-ni Bekor Qilish</h3>
+<button onclick="closeCancelModal()" class="p-2 rounded-lg transition-colors hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<p id="cancel-modal-symbol" class="text-sm mb-4" style="color: #a3aac4;"></p>
+<textarea id="cancel-reason" rows="3" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all mb-6" style="background-color: #192540; color: #dee5ff; resize: none;" placeholder="Bekor qilish sababini kiriting..."></textarea>
+<div class="flex justify-end gap-3">
+<button onclick="closeCancelModal()" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors" style="background-color: #192540; color: #a3aac4;">Yopish</button>
+<button onclick="confirmCancel()" class="px-4 py-2 rounded-lg text-sm font-bold transition-colors" style="background-color: #ff716c; color: white;">Bekor qilish</button>
+</div>
+</div>
+</div>
+
+<div id="notes-modal" class="fixed inset-0 z-50 hidden items-center justify-center" style="background-color: rgba(0, 0, 0, 0.7);">
+<div class="rounded-2xl p-8 w-full max-w-lg mx-4" style="background-color: #0f1930; border: 1px solid rgba(255, 255, 255, 0.1);">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline text-xl font-bold" style="color: white; font-family: Manrope, sans-serif;">Izohni Tahrirlash</h3>
+<button onclick="closeNotesModal()" class="p-2 rounded-lg transition-colors hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<p id="notes-modal-symbol" class="text-sm mb-4" style="color: #a3aac4;"></p>
+<textarea id="notes-textarea" rows="4" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all mb-6" style="background-color: #192540; color: #dee5ff; resize: none;" placeholder="Trade haqida izoh yozing..."></textarea>
+<div class="flex justify-end gap-3">
+<button onclick="closeNotesModal()" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors" style="background-color: #192540; color: #a3aac4;">Bekor qilish</button>
+<button onclick="saveNotes()" class="px-4 py-2 rounded-lg text-sm font-bold transition-colors" style="background-color: var(--accent-color, #3bbffa); color: #00374d;">Saqlash</button>
+</div>
+</div>
+</div>
+
+<script>
+const API_BASE = window.location.origin;
+
+function applyAccentColor() {
+    const settings = JSON.parse(localStorage.getItem('gigimon_settings') || '{}');
+    if (settings.accentColor) {
+        document.documentElement.style.setProperty('--accent-color', settings.accentColor);
+        document.documentElement.style.setProperty('--accent-color-dark', settings.accentColorDark || settings.accentColor);
+    }
+}
+applyAccentColor();
+
+const token = localStorage.getItem('gigimon_token');
+let allTrades = [];
+let currentPage = 1;
+const itemsPerPage = 10;
+let currentTimeframe = '30D';
+let currentView = 'active';
+
+if (!token) {
+    window.location.href = '/';
+}
+
+let lastNotificationCount = 0;
+
+async function checkUnreadCount() {
+    try {
+        const res = await fetch(`${API_BASE}/notifications/unread-count`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401) { localStorage.removeItem('gigimon_token'); window.location.href = '/'; return; }
+        if (res.ok) {
+            const data = await res.json();
+            updateBadge(data.count);
+            lastNotificationCount = data.count;
+        }
+    } catch (err) {}
+}
+
+function updateBadge(count) {
+    const badges = [document.getElementById('bell-badge')];
+    badges.forEach(badge => {
+        if (badge) {
+            if (count > 0) {
+                badge.textContent = count > 99 ? '99+' : count;
+                badge.classList.remove('hidden');
+                badge.classList.add('flex');
+            } else {
+                badge.classList.add('hidden');
+                badge.classList.remove('flex');
+            }
+        }
+    });
+}
+
+checkUnreadCount();
+setInterval(checkUnreadCount, 10000);
+
+let currentEditTradeId = null;
+
+function openNotesModal(tradeId, symbol, notes) {
+    currentEditTradeId = tradeId;
+    document.getElementById('notes-modal-symbol').textContent = `${symbol} - Izoh`;
+    document.getElementById('notes-textarea').value = notes;
+    document.getElementById('notes-modal').classList.remove('hidden');
+    document.getElementById('notes-modal').classList.add('flex');
+    document.getElementById('notes-textarea').focus();
+}
+
+function closeNotesModal() {
+    document.getElementById('notes-modal').classList.add('hidden');
+    document.getElementById('notes-modal').classList.remove('flex');
+    currentEditTradeId = null;
+}
+
+async function saveNotes() {
+    if (!currentEditTradeId) return;
+    const notes = document.getElementById('notes-textarea').value;
+    try {
+        const res = await fetch(`${API_BASE}/trades/${currentEditTradeId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ notes })
+        });
+        if (res.ok) {
+            closeNotesModal();
+            loadTrades();
+        } else {
+            alert('Xatolik yuz berdi');
+        }
+    } catch (err) {
+        console.error('Save notes error:', err);
+        alert('Xatolik yuz berdi');
+    }
+}
+
+document.getElementById('notes-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeNotesModal();
+});
+
+let cancelTradeId = null;
+
+function openCancelModal(tradeId, symbol) {
+    cancelTradeId = tradeId;
+    document.getElementById('cancel-modal-symbol').textContent = `${symbol} - trade bekor qilinsinmi?`;
+    document.getElementById('cancel-reason').value = '';
+    document.getElementById('cancel-modal').classList.remove('hidden');
+    document.getElementById('cancel-modal').classList.add('flex');
+}
+
+function closeCancelModal() {
+    document.getElementById('cancel-modal').classList.add('hidden');
+    document.getElementById('cancel-modal').classList.remove('flex');
+    cancelTradeId = null;
+}
+
+async function confirmCancel() {
+    if (!cancelTradeId) return;
+    const reason = document.getElementById('cancel-reason').value;
+    try {
+        const res = await fetch(`${API_BASE}/trades/${cancelTradeId}/cancel`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ reason })
+        });
+        if (res.ok) {
+            closeCancelModal();
+            loadTrades();
+        } else {
+            const err = await res.json();
+            alert(err.detail || 'Xatolik yuz berdi');
+        }
+    } catch (err) {
+        console.error('Cancel error:', err);
+        alert('Xatolik yuz berdi');
+    }
+}
+
+document.getElementById('cancel-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeCancelModal();
+});
+
+async function loadUserInfo() {
+    try {
+        const userRes = await fetch(`${API_BASE}/users/me`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (userRes.ok) {
+            const user = await userRes.json();
+            const displayName = user.display_name || user.email || 'Treyder';
+            document.querySelector('aside p.text-xs').textContent = displayName;
+            
+            const savedAvatar = localStorage.getItem('gigimon_avatar');
+            const settings = JSON.parse(localStorage.getItem('gigimon_settings') || '{}');
+            const topAvatarImg = document.getElementById('top-avatar-img');
+            if (topAvatarImg) {
+                if (savedAvatar || settings.avatar) {
+                    topAvatarImg.src = savedAvatar || settings.avatar;
+                } else {
+                    topAvatarImg.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(displayName) + '&background=192540&color=3bbffa&size=64';
+                }
+            }
+        }
+    } catch (err) {
+        console.error('Error loading user info:', err);
+    }
+}
+
+async function loadTrades() {
+    try {
+        const endpoint = currentView === 'active' ? '/trades?limit=100' : '/trades/archive?limit=100';
+        const res = await fetch(`${API_BASE}${endpoint}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        allTrades = await res.json();
+        
+        const symbolSelect = document.getElementById('symbol-filter');
+        const currentVal = symbolSelect.value;
+        symbolSelect.innerHTML = '<option value="">All Assets</option>';
+        const symbols = [...new Set(allTrades.map(t => t.symbol))];
+        symbols.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s;
+            opt.textContent = s;
+            symbolSelect.appendChild(opt);
+        });
+        symbolSelect.value = currentVal;
+        
+        renderTrades();
+    } catch (err) {
+        console.error('Error loading trades:', err);
+    }
+}
+
+function setView(view) {
+    currentView = view;
+    currentPage = 1;
+    
+    document.getElementById('view-active').style.backgroundColor = view === 'active' ? 'rgba(59, 191, 250, 0.1)' : 'transparent';
+    document.getElementById('view-active').style.color = view === 'active' ? 'var(--accent-color, #3bbffa)' : '#a3aac4';
+    
+    document.getElementById('view-archived').style.backgroundColor = view === 'archived' ? 'rgba(59, 191, 250, 0.1)' : 'transparent';
+    document.getElementById('view-archived').style.color = view === 'archived' ? 'var(--accent-color, #3bbffa)' : '#a3aac4';
+    
+    loadTrades();
+}
+
+function setTimeframe(tf) {
+    currentTimeframe = tf;
+    currentPage = 1;
+    
+    document.getElementById('btn-30d').style.backgroundColor = tf === '30D' ? 'rgba(59, 191, 250, 0.1)' : 'transparent';
+    document.getElementById('btn-30d').style.color = tf === '30D' ? 'var(--accent-color, #3bbffa)' : '#a3aac4';
+    
+    document.getElementById('btn-90d').style.backgroundColor = tf === '90D' ? 'rgba(59, 191, 250, 0.1)' : 'transparent';
+    document.getElementById('btn-90d').style.color = tf === '90D' ? 'var(--accent-color, #3bbffa)' : '#a3aac4';
+    
+    document.getElementById('btn-all').style.backgroundColor = tf === 'ALL' ? 'rgba(59, 191, 250, 0.1)' : 'transparent';
+    document.getElementById('btn-all').style.color = tf === 'ALL' ? 'var(--accent-color, #3bbffa)' : '#a3aac4';
+    
+    renderTrades();
+}
+
+function renderTrades() {
+    const search = document.getElementById('search-input').value.toLowerCase();
+    const symbolFilter = document.getElementById('symbol-filter').value;
+    
+    let daysFilter = 30;
+    if (currentTimeframe === '90D') daysFilter = 90;
+    else if (currentTimeframe === 'ALL') daysFilter = null;
+    
+    const cutoffDate = daysFilter ? new Date(Date.now() - daysFilter * 24 * 60 * 60 * 1000) : null;
+    
+    let filtered = allTrades.filter(t => {
+        const tradeSymbol = t.symbol || '';
+        const matchSearch = tradeSymbol.toLowerCase().includes(search) || 
+                           (t.notes && t.notes.toLowerCase().includes(search));
+        const matchSymbol = !symbolFilter || t.symbol === symbolFilter;
+        const matchTimeframe = !cutoffDate || new Date(t.executed_at) >= cutoffDate;
+        return matchSearch && matchSymbol && matchTimeframe;
+    });
+    
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+    const start = (currentPage - 1) * itemsPerPage;
+    const pageTrades = filtered.slice(start, start + itemsPerPage);
+    
+    const container = document.getElementById('trades-list');
+    
+    if (pageTrades.length === 0) {
+        container.innerHTML = `<div class="text-center py-12" style="color: #a3aac4;">${currentView === 'active' ? 'No trades found' : 'Arxivda trade yo\'q'}</div>`;
+    } else {
+        container.innerHTML = pageTrades.map(t => {
+            let pnlText = '-';
+            let pnlColor = '#a3aac4';
+            if (t.exit_price) {
+                const cs = t.contract_size || 1;
+                const entryValue = t.qty * cs * t.price;
+                const exitValue = t.qty * cs * t.exit_price;
+                const pnl = t.side.toLowerCase() === 'buy' ? exitValue - entryValue : entryValue - exitValue;
+                pnlText = `${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)}`;
+                pnlColor = pnl >= 0 ? '#6bff8f' : '#ff716c';
+            }
+            
+            const hasNotes = t.notes && t.notes.trim().length > 0;
+            const hasWarning = !hasNotes;
+            
+            return `
+            <div class="hover:bg-[#192540]/50 transition-all duration-300 rounded-2xl p-4 md:p-6 relative" style="background-color: #0f1930; border: 1px solid ${currentView === 'archived' ? 'rgba(163, 170, 196, 0.2)' : hasWarning ? 'rgba(255, 177, 72, 0.3)' : 'rgba(64, 72, 93, 0.1)'};">
+                ${hasWarning && currentView === 'active' ? '<div class="absolute -left-0.5 top-0 bottom-0 w-1 rounded-l-xl" style="background-color: #ffb148;"></div>' : ''}
+                ${currentView === 'archived' ? '<div class="absolute -left-0.5 top-0 bottom-0 w-1 rounded-l-xl" style="background-color: #a3aac4;"></div>' : ''}
+                <div class="grid grid-cols-1 md:grid-cols-12 items-center gap-4">
+                    <div class="col-span-1">
+                        <p class="text-sm font-bold" style="color: #dee5ff;">${new Date(t.executed_at).toLocaleDateString()}</p>
+                        <p class="text-xs" style="color: #a3aac4;">${new Date(t.executed_at).toLocaleTimeString()}</p>
+                    </div>
+                    <div class="col-span-2 flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: #192540;">
+                            <span class="material-symbols-outlined text-lg" style="color: var(--accent-color, #3bbffa);">currency_bitcoin</span>
+                        </div>
+                        <span class="font-headline font-bold" style="color: #dee5ff;">${t.symbol}</span>
+                    </div>
+                    <div class="col-span-1">
+                        <span class="px-2 py-1 rounded text-[10px] font-black uppercase" style="background-color: ${t.side.toLowerCase() === 'buy' ? 'rgba(107, 255, 143, 0.1)' : 'rgba(255, 113, 108, 0.1)'}; color: ${t.side.toLowerCase() === 'buy' ? '#6bff8f' : '#ff716c'};">${t.side.toUpperCase()}</span>
+                    </div>
+                    <div class="col-span-2 text-left">
+                        <p class="text-sm font-medium" style="color: #dee5ff;">${t.qty}</p>
+                        <p class="text-[10px]" style="color: #a3aac4;">$${t.price} Entry</p>
+                    </div>
+                    <div class="col-span-2 text-left">
+                        <p class="text-sm font-medium" style="color: #dee5ff;">${t.exit_price ? '$' + t.exit_price : '-'}</p>
+                        <p class="text-[10px]" style="color: #a3aac4;">${t.exit_at ? new Date(t.exit_at).toLocaleDateString() : '-'}</p>
+                    </div>
+                    <div class="col-span-1 text-left md:text-right">
+                        <p class="text-lg font-headline font-extrabold" style="color: ${pnlColor};">${pnlText}</p>
+                        <p class="text-[10px]" style="color: rgba(163, 170, 196, 0.6);">$${t.fee || 0} Fee</p>
+                    </div>
+                    <div class="col-span-2 flex justify-center items-center gap-2 cursor-pointer hover:opacity-80" onclick="openNotesModal('${t.id}', '${t.symbol}', '${(t.notes || '').replace(/'/g, "\\'")}')">
+                        ${hasWarning && currentView === 'active' ? '<span class="material-symbols-outlined text-sm" style="color: #ffb148;">warning</span>' : '<span class="material-symbols-outlined text-sm" style="color: #6bff8f;">edit</span>'}
+                        <span class="text-xs font-medium px-3 py-1 rounded-full" style="${hasWarning && currentView === 'active' ? 'background-color: rgba(255, 177, 72, 0.1); color: #ffb148; border: 1px solid rgba(255, 177, 72, 0.3);' : 'background-color: #192540; color: #a3aac4; border: 1px solid rgba(64, 72, 93, 0.2);'}">${hasWarning && currentView === 'active' ? 'Izoh qo\'shish...' : (t.notes.length > 20 ? t.notes.substring(0, 20) + '...' : t.notes)}</span>
+                    </div>
+                    <div class="col-span-1 flex justify-center items-center">
+                        ${currentView === 'active' ? `<button onclick="openCancelModal('${t.id}', '${t.symbol}')" class="p-2 rounded-lg transition-colors hover:bg-[#192540] group" title="Bekor qilish"><span class="material-symbols-outlined text-sm group-hover:text-red-400" style="color: #a3aac4;">cancel</span></button>` : (t.cancelled_reason ? `<span class="text-[10px] italic" style="color: #a3aac4;">${t.cancelled_reason.length > 15 ? t.cancelled_reason.substring(0, 15) + '...' : t.cancelled_reason}</span>` : '')}
+                    </div>
+                </div>
+            </div>
+        `}).join('');
+    }
+    
+    renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+    const container = document.getElementById('pagination');
+    if (totalPages <= 1) {
+        container.innerHTML = '';
+        return;
+    }
+    
+    let html = '';
+    html += `<button onclick="changePage(${currentPage - 1})" class="w-10 h-10 rounded-xl flex items-center justify-center" style="background-color: #0f1930; border: 1px solid rgba(64, 72, 93, 0.1); color: #a3aac4;"><span class="material-symbols-outlined">first_page</span></button>`;
+    
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            html += `<button onclick="changePage(${i})" class="w-10 h-10 rounded-xl font-bold ${i === currentPage ? '' : ''}" style="background-color: ${i === currentPage ? 'var(--accent-color, #3bbffa)' : '#0f1930'}; color: ${i === currentPage ? '#00374d' : '#a3aac4'}; border: 1px solid rgba(64, 72, 93, 0.1);">${i}</button>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            html += `<span class="text-on-surface-variant px-2" style="color: #a3aac4;">...</span>`;
+        }
+    }
+    
+    html += `<button onclick="changePage(${currentPage + 1})" class="w-10 h-10 rounded-xl flex items-center justify-center" style="background-color: #0f1930; border: 1px solid rgba(64, 72, 93, 0.1); color: #a3aac4;"><span class="material-symbols-outlined">last_page</span></button>`;
+    
+    container.innerHTML = html;
+}
+
+function changePage(page) {
+    const totalPages = Math.ceil(allTrades.length / itemsPerPage);
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+    renderTrades();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('search-input').addEventListener('input', () => {
+    currentPage = 1;
+    renderTrades();
+});
+
+document.getElementById('symbol-filter').addEventListener('change', () => {
+    currentPage = 1;
+    renderTrades();
+});
+
+function logout() {
+    localStorage.removeItem('gigimon_token');
+    localStorage.removeItem('gigimon_user_id');
+    window.location.href = '/';
+}
+
+loadUserInfo();
+loadTrades();
+</script>
+<script src="/ai-assistant.js"></script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bildirishnomalar | Gigimon Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+body { background-color: #060e20; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.assistant-pulse { animation: breathe 3s ease-in-out infinite; }
+@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+</style>
+</head>
+<body style="background-color: #060e20; color: #dee5ff; font-family: Inter, sans-serif;">
+
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-full z-40 p-4 w-64" style="background-color: #0f1930; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(8, 74, 110, 0.1);">
+<div class="mb-10 px-4">
+<h1 class="font-headline font-extrabold text-2xl tracking-tighter" style="color: #3bbffa; font-family: Manrope, sans-serif;">Gigimon Intelligence</h1>
+<p class="text-xs mt-1" style="color: #a3aac4;">Pro Treyder</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a href="/dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a href="/add-trade.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">add_chart</span>
+Trade Qo'shish
+</a>
+<a href="/history.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">history</span>
+Trade Tarixi
+</a>
+<a href="/analytics.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">analytics</span>
+Tahlil
+</a>
+<a href="/notifications.html" class="flex items-center gap-3 rounded-lg px-4 py-3 border-l-4 font-medium text-sm" style="background-color: #192540; color: #3bbffa; border-color: #3bbffa;">
+<span class="material-symbols-outlined relative">notifications<span id="bell-badge" class="hidden absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">0</span></span>
+Bildirishnomalar
+</a>
+<a href="/settings.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">settings</span>
+Sozlamalar
+</a>
+</nav>
+<div class="mt-auto space-y-4">
+<div class="p-4 rounded-xl" style="background-color: rgba(59, 191, 250, 0.1); border: 1px solid rgba(59, 191, 250, 0.2);">
+<p class="text-xs font-bold mb-2 uppercase tracking-wider" style="color: #3bbffa;">Faol Reja</p>
+<button class="w-full py-2 rounded-lg text-sm font-bold transition-colors" style="background-color: #3bbffa; color: #00374d;">Pro'ga O'tish</button>
+</div>
+<div class="space-y-1">
+<div onclick="logout()" class="flex items-center gap-3 px-4 py-3 transition-all text-sm cursor-pointer" style="color: #a3aac4;">
+<span class="material-symbols-outlined">logout</span>
+Chiqish
+</div>
+</div>
+</div>
+</aside>
+
+<header class="lg:hidden fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16" style="background-color: rgba(6, 14, 32, 0.9); backdrop-filter: blur(24px);">
+<span class="text-2xl font-black tracking-tighter" style="color: #3bbffa;">Gigimon</span>
+<div class="flex gap-4" style="color: #3bbffa;">
+<a href="/notifications.html"><span class="material-symbols-outlined">notifications</span></a>
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</header>
+
+<main class="lg:ml-64 pt-20 lg:pt-10 pb-32 px-6 lg:px-12 max-w-7xl mx-auto">
+
+<!-- Notifications Feed Container -->
+<header class="mb-12">
+<h2 class="font-headline text-4xl font-extrabold tracking-tight mb-2" style="color: white; font-family: Manrope, sans-serif;">Bildirishnomalar</h2>
+<p class="max-w-2xl" style="color: #a3aac4;">Trading jurnalingiz bo'yicha muhim yangiliklar.</p>
+</header>
+
+<section class="max-w-4xl">
+<div class="flex items-center justify-between mb-6">
+<button id="enable-notif-btn" onclick="requestNotifPermission()" class="hidden flex items-center gap-2 px-5 py-2.5 rounded-xl transition-colors text-sm font-medium" style="background-color: #3bbffa; color: #00374d;">
+<span class="material-symbols-outlined text-lg">notifications</span>
+<span>Push xabarlarni yoqish</span>
+</button>
+<button onclick="markAllRead()" class="flex items-center gap-2 px-5 py-2.5 rounded-xl transition-colors text-sm font-medium" style="background-color: #192540; border: 1px solid rgba(64, 72, 93, 0.3); color: #dee5ff;">
+<span class="material-symbols-outlined text-lg">done_all</span>
+<span>Hammasini o'qilgan deb belgilash</span>
+</button>
+</div>
+
+<!-- Tabs -->
+<div class="flex items-center space-x-8 mb-8 overflow-x-auto pb-2 border-b" style="border-color: rgba(64, 72, 93, 0.1);">
+<button class="pb-4 text-[#3bbffa] border-b-2 font-medium text-sm whitespace-nowrap" style="border-color: #3bbffa;">Hammasi</button>
+<button class="pb-4 text-[#a3aac4] hover:text-[#dee5ff] transition-colors font-medium text-sm whitespace-nowrap">Trade'lar</button>
+<button class="pb-4 text-[#a3aac4] hover:text-[#dee5ff] transition-colors font-medium text-sm whitespace-nowrap">AI Tushunchalar</button>
+<button class="pb-4 text-[#a3aac4] hover:text-[#dee5ff] transition-colors font-medium text-sm whitespace-nowrap">Tizim</button>
+</div>
+
+<!-- Notification Cards -->
+<div id="notifications-list" class="space-y-4">
+<!-- Notifications will be loaded here -->
+<div class="text-center py-12" style="color: #a3aac4;">Yuklanmoqda...</div>
+</div>
+
+<!-- Load More / Footer Spacer -->
+<div class="py-12 flex justify-center">
+<button class="text-[#a3aac4] hover:text-[#3bbffa] transition-all text-xs font-bold uppercase tracking-widest flex items-center space-x-2">
+<span>Ko'proq ko'rish</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</section>
+
+
+
+<div class="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#0f1930] backdrop-blur-md flex items-center justify-around z-50 border-t" style="border-color: rgba(64, 72, 93, 0.1);">
+<a href="/dashboard.html" class="flex flex-col items-center text-[#a3aac4]">
+<span class="material-symbols-outlined">dashboard</span>
+</a>
+<a href="/add-trade.html" class="flex flex-col items-center text-[#a3aac4]">
+<span class="material-symbols-outlined">add_chart</span>
+</a>
+<a href="/history.html" class="flex flex-col items-center text-[#a3aac4]">
+<span class="material-symbols-outlined">history</span>
+</a>
+<a href="/analytics.html" class="flex flex-col items-center text-[#a3aac4]">
+<span class="material-symbols-outlined">analytics</span>
+</a>
+<a href="/settings.html" class="flex flex-col items-center text-[#a3aac4]">
+<span class="material-symbols-outlined">settings</span>
+</a>
+</div>
+
+<script>
+const API_BASE = window.location.origin;
+const token = localStorage.getItem('gigimon_token');
+
+if (!token) {
+    window.location.href = '/';
+}
+
+let lastNotificationCount = -1;
+
+async function requestNotifPermission() {
+    if ('Notification' in window) {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            document.getElementById('enable-notif-btn').classList.add('hidden');
+            new Notification('Gigimon', { body: 'Push xabarlar yoqildi! Endi yangi xabarlar tepadan chiqadi.', icon: '/favicon.ico' });
+        }
+    }
+}
+
+function checkNotifPermission() {
+    if ('Notification' in window && Notification.permission === 'default') {
+        document.getElementById('enable-notif-btn').classList.remove('hidden');
+        document.getElementById('enable-notif-btn').classList.add('flex');
+    }
+}
+
+async function checkUnreadCount() {
+    try {
+        const res = await fetch(`${API_BASE}/notifications?limit=10`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+            const notifications = await res.json();
+            const unreadCount = notifications.filter(n => !n.is_read).length;
+            updateBadge(unreadCount);
+            
+            if (lastNotificationCount >= 0 && unreadCount > lastNotificationCount) {
+                const latestUnread = notifications.find(n => !n.is_read);
+                if (latestUnread) {
+                    let title = latestUnread.title;
+                    let message = latestUnread.message;
+                    
+                    if (latestUnread.type === 'trade' && latestUnread.title.toLowerCase().includes('yopildi')) {
+                        const symbolMatch = latestUnread.message.match(/^(\w+)/);
+                        const pnlMatch = latestUnread.message.match(/PnL: ([+-]?\$[\d.]+)/);
+                        const symbol = symbolMatch ? symbolMatch[1] : 'Trade';
+                        const pnl = pnlMatch ? pnlMatch[1] : '';
+                        const isWin = pnl.startsWith('+');
+                        title = '📈 ' + symbol + ' yopildi';
+                        message = pnl + ' (' + (isWin ? 'G\'alaba' : 'Zarar') + ')';
+                    } else if (latestUnread.type === 'warning') {
+                        const symbolMatch = latestUnread.message.match(/^(\w+)/);
+                        const symbol = symbolMatch ? symbolMatch[1] : 'Trade';
+                        title = '⚠️ Izoh yo\'q';
+                        message = symbol + ' trade uchun izoh yozilmagan';
+                    }
+                    
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        new Notification(title, { body: message, icon: '/favicon.ico' });
+                    }
+                }
+            }
+            lastNotificationCount = unreadCount;
+        }
+    } catch (err) {}
+}
+
+function updateBadge(count) {
+    const badges = [document.getElementById('bell-badge')];
+    badges.forEach(badge => {
+        if (badge) {
+            if (count > 0) {
+                badge.textContent = count > 99 ? '99+' : count;
+                badge.classList.remove('hidden');
+                badge.classList.add('flex');
+            } else {
+                badge.classList.add('hidden');
+                badge.classList.remove('flex');
+            }
+        }
+    });
+}
+
+function applyAccentColor() {
+    const settings = JSON.parse(localStorage.getItem('gigimon_settings') || '{}');
+    if (settings.accentColor) {
+        document.documentElement.style.setProperty('--accent-color', settings.accentColor);
+        document.documentElement.style.setProperty('--accent-color-dark', settings.accentColorDark || settings.accentColor);
+    }
+}
+applyAccentColor();
+
+async function loadUserInfo() {
+    try {
+        const userRes = await fetch(`${API_BASE}/users/me`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (userRes.ok) {
+            const user = await userRes.json();
+            const displayName = user.display_name || user.email || 'Treyder';
+            document.querySelector('aside p').textContent = displayName;
+            
+            const savedAvatar = localStorage.getItem('gigimon_avatar');
+            const settings = JSON.parse(localStorage.getItem('gigimon_settings') || '{}');
+            const topAvatarImg = document.getElementById('top-avatar-img');
+            if (topAvatarImg) {
+                if (savedAvatar || settings.avatar) {
+                    topAvatarImg.src = savedAvatar || settings.avatar;
+                } else {
+                    topAvatarImg.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(displayName) + '&background=192540&color=3bbffa&size=64';
+                }
+            }
+        }
+    } catch (err) {
+        console.error('Error loading user info:', err);
+    }
+}
+
+async function loadNotifications() {
+    const container = document.getElementById('notifications-list');
+    
+    try {
+        const res = await fetch(`${API_BASE}/notifications?limit=50`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!res.ok) {
+            container.innerHTML = '<div class="text-center py-12" style="color: #ff716c;">Xatolik yuz berdi</div>';
+            return;
+        }
+        
+        const notifications = await res.json();
+        
+        if (notifications.length === 0) {
+            container.innerHTML = '<div class="text-center py-12" style="color: #a3aac4;">Hali bildirishnomalar yo\'q</div>';
+            return;
+        }
+        
+        container.innerHTML = notifications.map(n => `
+            <div class="group rounded-xl p-6 flex gap-6 relative overflow-hidden transition-all duration-500 hover:bg-[#192540]/50 cursor-pointer ${n.is_read ? '' : 'ring-1 ring-[#3bbffa]/20'}" 
+                 style="background-color: #0f1930; border: 1px solid rgba(255, 255, 255, 0.05);"
+                 onclick="markAsRead('${n.id}')">
+                <div class="absolute left-0 top-0 bottom-0 w-1" style="background-color: ${getColor(n.type)}; box-shadow: 0 0 10px ${getColorRGBA(n.type)};"></div>
+                <div class="flex-shrink-0">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: ${getColorRGBA(n.type)};">
+                        <span class="material-symbols-outlined" style="color: ${getColor(n.type)};">${getIcon(n.type)}</span>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-start mb-1">
+                        <h4 class="font-bold text-[#dee5ff] tracking-tight font-['Manrope']">${n.title}</h4>
+                        <span class="text-[11px] uppercase tracking-widest" style="color: #a3aac4;">${formatTime(n.created_at)}</span>
+                    </div>
+                    <p class="font-['Inter'] leading-relaxed" style="color: #a3aac4;">${n.message}</p>
+                    ${!n.is_read ? '<span class="inline-block mt-2 px-2 py-0.5 rounded text-[10px] font-bold uppercase" style="background-color: rgba(59, 191, 250, 0.2); color: #3bbffa;">Yangi</span>' : ''}
+                </div>
+            </div>
+        `).join('');
+        
+    } catch (err) {
+        container.innerHTML = '<div class="text-center py-12" style="color: #ff716c;">Xatolik yuz berdi</div>';
+    }
+}
+
+async function markAsRead(id) {
+    try {
+        await fetch(`${API_BASE}/notifications/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ is_read: true })
+        });
+        loadNotifications();
+    } catch (err) {
+        console.error('Error marking notification as read:', err);
+    }
+}
+
+function formatTime(dateStr) {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000 / 60);
+    if (diff < 1) return 'Hozir';
+    if (diff < 60) return diff + ' daqiqa oldin';
+    if (diff < 1440) return Math.floor(diff / 60) + ' soat oldin';
+    return Math.floor(diff / 1440) + ' kun oldin';
+}
+
+function getColor(type) {
+    const colors = {
+        trade: '#6bff8f',
+        ai_insight: '#3bbffa',
+        warning: '#ffb148',
+        system: '#a3aac4'
+    };
+    return colors[type] || '#a3aac4';
+}
+
+function getColorRGBA(type) {
+    const colors = {
+        trade: 'rgba(107, 255, 143, 0.1)',
+        ai_insight: 'rgba(59, 191, 250, 0.1)',
+        warning: 'rgba(255, 177, 72, 0.1)',
+        system: 'rgba(163, 170, 196, 0.1)'
+    };
+    return colors[type] || 'rgba(163, 170, 196, 0.1)';
+}
+
+function getIcon(type) {
+    const icons = {
+        trade: 'trending_up',
+        ai_insight: 'psychology',
+        warning: 'warning',
+        system: 'sync'
+    };
+    return icons[type] || 'info';
+}
+
+async function markAllRead() {
+    try {
+        await fetch(`${API_BASE}/notifications/mark-all-read`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        loadNotifications();
+    } catch (err) {
+        alert('Xatolik yuz berdi');
+    }
+}
+
+function logout() {
+    localStorage.removeItem('gigimon_token');
+    window.location.href = '/';
+}
+
+loadUserInfo();
+loadNotifications();
+checkUnreadCount();
+checkNotifPermission();
+setInterval(() => { loadNotifications(); checkUnreadCount(); }, 10000);
+</script>
+<script src="/ai-assistant.js"></script>
+</body>
+</html>

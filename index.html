@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Gigimon - Hisobingizni Yarating</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "secondary-fixed-dim": "#5bf083", "on-surface-variant": "#a3aac4", "secondary-dim": "#5bf083",
+        "error-dim": "#d7383b", "on-tertiary": "#573500", "on-secondary-container": "#e4ffe2",
+        "on-tertiary-fixed-variant": "#563400", "surface-container": "#0f1930", "primary-container": "#22b1ec",
+        "inverse-on-surface": "#4d556b", "surface-tint": "#3bbffa", "surface-bright": "#1f2b49",
+        "on-tertiary-container": "#4a2c00", "inverse-surface": "#faf8ff", "primary": "#3bbffa",
+        "on-error": "#490006", "on-primary-fixed": "#00121d", "primary-fixed": "#2db7f2",
+        "surface-variant": "#192540", "on-secondary-fixed-variant": "#006a2d", "secondary-fixed": "#6bff8f",
+        "surface-container-highest": "#192540", "error-container": "#9f0519", "surface-dim": "#060e20",
+        "on-primary-container": "#002b3d", "tertiary-container": "#f8a010", "outline": "#6d758c",
+        "surface-container-lowest": "#000000", "on-secondary": "#005f28", "inverse-primary": "#00668b",
+        "on-tertiary-fixed": "#2a1700", "on-primary-fixed-variant": "#003a50", "background": "#060e20",
+        "error": "#ff716c", "tertiary": "#ffb148", "on-surface": "#dee5ff", "secondary": "#6bff8f",
+        "on-primary": "#00374d", "surface-container-low": "#091328", "primary-dim": "#05a9e3",
+        "secondary-container": "#006e2f", "tertiary-fixed": "#f8a010", "tertiary-dim": "#e79400",
+        "surface": "#060e20", "outline-variant": "#40485d", "tertiary-fixed-dim": "#e79400",
+        "on-secondary-fixed": "#004a1d", "surface-container-high": "#141f38", "on-error-container": "#ffa8a3",
+        "on-background": "#dee5ff", "primary-fixed-dim": "#05a9e3"
+      }
+    }
+  }
+}
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.glass-panel { background: rgba(25, 37, 64, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+</style>
+</head>
+<body class="bg-surface-dim text-on-surface font-body selection:bg-primary/30">
+<nav class="w-full absolute top-0 z-50 bg-transparent">
+<div class="flex justify-between items-center px-8 py-6 w-full max-w-7xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-slate-50 font-headline">Gigimon</div>
+<div class="flex items-center gap-8 font-inter text-xs tracking-wide">
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="#">Maxfiylik Siyosati</a>
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="#">Yordam Markazi</a>
+<a class="px-5 py-2 rounded-lg bg-slate-800/50 text-sky-400 font-bold border border-sky-400/20 hover:bg-slate-800 transition-all duration-300" href="#" onclick="showLogin()">Kirish</a>
+</div>
+</div>
+</nav>
+
+<main class="min-h-screen flex flex-col md:flex-row">
+<section class="hidden md:flex md:w-1/2 bg-surface-container-low relative overflow-hidden flex-col justify-center px-12 lg:px-24">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/5 opacity-50"></div>
+<img class="w-full h-full object-cover opacity-20 mix-blend-luminosity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH1lpXX3mKmpsCfOzvt1lei4lVlEmZUhj_zAZLyloM-RbLnTlQMr1roE07szCSVx7c4xiOXA4Uz5XASPuIr_WYhHDiBMy0NYFWPb-uaXi7XwTARpJvOZfFJcrZN7Ir6adnmNv3fTdECQICPxzz53Q6BTQSIKdHNwQgoSIII_mu6RlNMEuEz2PNBA0KM-7-y9ye8LLAHO0xn4DKJgogeDR7Qa5k0RQ3cbv7pZExilZ6KQOaM2oCumD-iYINI8l14mcbZmQ2mrqSraM" alt="">
+</div>
+<div class="relative z-10 max-w-lg">
+<span class="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary font-headline text-xs font-bold tracking-widest uppercase mb-6">Jurnalning Kelajagi</span>
+<h1 class="font-headline text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6">
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary-dim">Moliyaviy Intellekt</span> Dunyosiga Qadam Qoying.
+</h1>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-8 font-light">
+Raqamli o'zgartirishga qo'shiling. Moliyaviy me'morlar uchun mo'ljallangan real vaqt rejimida bozor hikoyalari va yuqori aniqlikdagi jurnalga kiring.
+</p>
+<div class="grid grid-cols-2 gap-6 mt-12">
+<div class="p-6 rounded-xl glass-panel border border-outline-variant/10">
+<div class="text-secondary text-2xl font-bold mb-1">0.02ms</div>
+<div class="text-on-surface-variant text-xs uppercase tracking-widest font-bold">Bajarilish</div>
+</div>
+<div class="p-6 rounded-xl glass-panel border border-outline-variant/10">
+<div class="text-primary text-2xl font-bold mb-1">99.9%</div>
+<div class="text-on-surface-variant text-xs uppercase tracking-widest font-bold">Aniqlik</div>
+</div>
+</div>
+</div>
+<div class="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/20 blur-[120px] rounded-full"></div>
+</section>
+
+<!-- Registration Form -->
+<section class="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-24 relative bg-surface-dim">
+<div class="w-full max-w-md space-y-8">
+<div class="text-center md:text-left">
+<h2 class="font-headline text-3xl font-bold text-white tracking-tight">Hisob Yaratish</h2>
+<p class="text-on-surface-variant mt-2">Jurnalingizga kirishni boshlash uchun ma'lumotlaringizni kiriting.</p>
+</div>
+
+<div id="error-msg" class="hidden p-4 rounded-xl bg-error-container text-error text-sm"></div>
+<div id="success-msg" class="hidden p-4 rounded-xl bg-green-900/50 text-green-400 text-sm"></div>
+
+<form id="register-form" class="space-y-5">
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-on-surface-variant tracking-widest uppercase ml-1">To'liq Ism</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-xl">person</span>
+<input name="full_name" class="w-full bg-surface-container-highest border-none rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline-variant focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Alex Sterling" type="text" required>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-on-surface-variant tracking-widest uppercase ml-1">Elektron Pochta</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-xl">mail</span>
+<input name="email" class="w-full bg-surface-container-highest border-none rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline-variant focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="name@company.com" type="email" required>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-on-surface-variant tracking-widest uppercase ml-1">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-xl">lock</span>
+<input name="password" class="w-full bg-surface-container-highest border-none rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline-variant focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="••••••••" type="password" required minlength="8">
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-xs font-bold text-on-surface-variant tracking-widest uppercase ml-1">Tasdiqlash</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-xl">shield</span>
+<input name="confirm_password" class="w-full bg-surface-container-highest border-none rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline-variant focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="••••••••" type="password" required>
+</div>
+</div>
+</div>
+<div class="flex items-start gap-3 py-2">
+<input class="h-5 w-5 rounded border-outline-variant/30 bg-surface-container-highest text-primary focus:ring-primary/20 focus:ring-offset-0 ring-offset-transparent transition-all" id="terms" name="terms" type="checkbox" required>
+<label class="text-sm text-on-surface-variant font-light leading-tight" for="terms">
+Men <a class="text-primary hover:underline transition-all" href="#">Foydalanish Shartlari</a> va <a class="text-primary hover:underline transition-all" href="#">Maxfiylik Siyosatiga</a> roziman.
+</label>
+</div>
+<button type="submit" class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-primary to-primary-dim text-on-primary font-headline font-bold text-base shadow-lg shadow-primary/20 hover:brightness-110 active:scale-95 transition-all duration-200 mt-4">
+Hisob Yaratish
+</button>
+</form>
+
+<p class="text-center text-on-surface-variant text-sm font-light">
+Hisobingiz bormi?
+<a class="text-secondary font-bold hover:text-secondary-fixed-dim transition-colors ml-1" href="#" onclick="showLogin()">Kirish</a>
+</p>
+</div>
+</section>
+</main>
+
+<footer class="w-full py-12 border-t border-slate-800/20 bg-slate-950">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="font-manrope text-sm font-bold text-slate-300">Gigimon Moliyaviy Intellekt</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-inter text-xs tracking-wide text-slate-500 hover:text-sky-400 transition-colors" href="#">Maxfiylik Siyosati</a>
+<a class="font-inter text-xs tracking-wide text-slate-500 hover:text-sky-400 transition-colors" href="#">Xizmat Shartlari</a>
+<a class="font-inter text-xs tracking-wide text-slate-500 hover:text-sky-400 transition-colors" href="#">Xavfsizlik</a>
+<a class="font-inter text-xs tracking-wide text-slate-500 hover:text-sky-400 transition-colors" href="#">Yordam Markazi</a>
+</div>
+<div class="font-inter text-xs tracking-wide text-slate-500 opacity-80">© 2026 Gigimon Moliyaviy Intellekt</div>
+</div>
+</footer>
+
+<script>
+const API_BASE = window.location.origin;
+
+document.getElementById('register-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const errorEl = document.getElementById('error-msg');
+  const successEl = document.getElementById('success-msg');
+  
+  errorEl.classList.add('hidden');
+  successEl.classList.add('hidden');
+  
+  const password = form.password.value;
+  const confirm = form.confirm_password.value;
+  
+  if (password !== confirm) {
+    errorEl.textContent = 'Parollar mos kelmaydi';
+    errorEl.classList.remove('hidden');
+    return;
+  }
+  
+  try {
+    const res = await fetch(`${API_BASE}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        full_name: form.full_name.value,
+        email: form.email.value,
+        password: password,
+        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        terms_accepted: true
+      })
+    });
+    
+    const data = await res.json();
+    
+    if (!res.ok) {
+      errorEl.textContent = data.detail || 'Registration failed';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    
+    localStorage.setItem('gigimon_token', data.access_token);
+    localStorage.setItem('gigimon_user_id', data.user_id);
+    
+    successEl.textContent = 'Account created! Redirecting...';
+    successEl.classList.remove('hidden');
+    
+    setTimeout(() => window.location.href = '/dashboard.html', 1500);
+  } catch (err) {
+    errorEl.textContent = 'Connection error. Is the server running?';
+    errorEl.classList.remove('hidden');
+  }
+});
+
+function showLogin() {
+  document.getElementById('register-form').innerHTML = `
+    <div class="space-y-1.5">
+      <label class="text-xs font-bold text-on-surface-variant tracking-widest uppercase ml-1">Email</label>
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-xl">mail</span>
+        <input id="login-email" class="w-full bg-surface-container-highest border-none rounded-xl py-3.5 pl-12 pr-4 text-on-surface" placeholder="name@company.com" type="email" required>
+      </div>
+    </div>
+    <div class="space-y-1.5">
+<label class="text-xs font-bold text-on-surface-variant tracking-widest uppercase ml-1">Parol</label>
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant text-xl">lock</span>
+        <input id="login-password" class="w-full bg-surface-container-highest border-none rounded-xl py-3.5 pl-12 pr-4 text-on-surface" placeholder="••••••••" type="password" required>
+      </div>
+    </div>
+    <button type="button" onclick="doLogin()" class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-primary to-primary-dim text-on-primary font-headline font-bold text-base shadow-lg shadow-primary/20 hover:brightness-110 active:scale-95 transition-all duration-200 mt-4">
+      Sign In
+    </button>
+    <p class="text-center text-on-surface-variant text-sm font-light">
+      Don't have an account?
+      <a class="text-secondary font-bold hover:text-secondary-fixed-dim transition-colors ml-1" href="/">Register</a>
+    </p>
+  `;
+}
+
+async function doLogin() {
+  const errorEl = document.getElementById('error-msg');
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  
+  try {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    
+    const data = await res.json();
+    
+    if (!res.ok) {
+      errorEl.textContent = data.detail || 'Login failed';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    
+    localStorage.setItem('gigimon_token', data.access_token);
+    localStorage.setItem('gigimon_user_id', data.user_id);
+    
+    window.location.href = '/dashboard.html';
+  } catch (err) {
+    errorEl.textContent = 'Connection error';
+    errorEl.classList.remove('hidden');
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kirish | Gigimon Moliyaviy Intellekt</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+body { font-family: 'Inter', sans-serif; background-color: #060e20; color: #dee5ff; }
+.font-headline { font-family: 'Manrope', sans-serif; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.glass-panel { background: rgba(25, 37, 64, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(109, 117, 140, 0.15); }
+.glow-primary { box-shadow: 0 0 20px rgba(59, 191, 250, 0.15); }
+</style>
+</head>
+<body class="min-h-screen flex flex-col overflow-x-hidden">
+
+<header class="w-full absolute top-0 z-50">
+<div class="flex justify-between items-center px-8 py-6 w-full max-w-7xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter font-headline">Gigimon</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-sky-400 font-bold border-b-2 border-sky-400 pb-1 transition-all duration-300" href="/login.html">Kirish</a>
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="/">Ro'yxatdan o'tish</a>
+</nav>
+</div>
+</header>
+
+<main class="flex-grow flex flex-col md:flex-row min-h-screen">
+<section class="hidden md:flex md:w-1/2 lg:w-3/5 bg-surface-container-lowest relative overflow-hidden items-center justify-center">
+<div class="absolute inset-0 z-0">
+<div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px]"></div>
+</div>
+<div class="relative z-10 w-full h-full flex flex-col items-center justify-center p-12">
+<div class="w-full max-w-2xl aspect-square relative opacity-80">
+<img alt="Digital Ledger Visualization" class="w-full h-full object-cover rounded-3xl mix-blend-screen opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEIP750J1kHD61o_BBXCtIM_wilNCF3xldn-bu_xzmDwP5mmUN01ZmNtTG4B4on5A7OF6Icfa2BL90LklJWjrYn_ahuP8XgwIqNr01vqMA2I4DPYybAlZCKnySUiGR16MyOoC0V0FSLWd0JnjEzBkp_OhLFGISmJFv-AlVO3iBEalLkZsOf_4sV4vo7jYHiJpRn3AFV0KOIO6axq6WDFI1Bpb71kDsg6ZT1ni7YAbQRJtSqRx_qi9I-zVM4w18cjihZ9xCupqXpJA"/>
+<div class="absolute top-1/4 left-10 glass-panel p-4 rounded-xl scale-95 border-primary/20">
+<div class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mb-1">Jonli Tranzaksiya Oqimi</div>
+<div class="text-primary font-headline font-bold text-xl">+4.82 ETH</div>
+</div>
+<div class="absolute bottom-1/3 right-10 glass-panel p-4 rounded-xl scale-95 border-secondary/20">
+<div class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mb-1">Global Likvidlik</div>
+<div class="text-secondary font-headline font-bold text-xl">$1.2B</div>
+</div>
+</div>
+<div class="mt-8 text-center max-w-md">
+<h2 class="font-headline text-3xl font-extrabold tracking-tight text-white mb-4">Kelajakning Raqamli Jurnali.</h2>
+<p class="text-on-surface-variant text-lg leading-relaxed">Atmosferik chuqurlik va tahrirlash aniqligi bilan boyligingizning tartiblangan tavsifini bosing.</p>
+</div>
+</div>
+</section>
+
+<section class="w-full md:w-1/2 lg:w-2/5 bg-surface-dim flex items-center justify-center p-8 md:p-16">
+<div class="w-full max-w-md">
+<div class="mb-10">
+<h1 class="font-headline text-4xl font-extrabold text-on-surface tracking-tight mb-2">Xush Kelibsiz</h1>
+<p class="text-on-surface-variant">Institusional darajadagi moliyaviy portalingizga kiring.</p>
+</div>
+
+<div id="error-msg" class="hidden p-4 rounded-xl bg-error-container text-error text-sm mb-4"></div>
+
+<form id="login-form" class="space-y-6">
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant ml-1" for="email">Elektron Pochta</label>
+<input id="email" class="w-full bg-surface-container-highest border-none rounded-xl p-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-bright transition-all duration-300" placeholder="name@company.com" type="email" required/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant" for="password">Parol</label>
+<a class="text-xs font-semibold text-primary hover:text-primary-fixed transition-colors" href="#">Parolni unutdingizmi?</a>
+</div>
+<input id="password" class="w-full bg-surface-container-highest border-none rounded-xl p-4 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-surface-bright transition-all duration-300" placeholder="••••••••" type="password" required/>
+</div>
+<div class="flex items-center space-x-3 px-1">
+<input class="w-5 h-5 rounded border-none bg-surface-container-highest text-primary focus:ring-offset-background focus:ring-primary cursor-pointer" id="remember" type="checkbox"/>
+<label class="text-sm text-on-surface-variant cursor-pointer" for="remember">30 kun davomida tizimda qoling</label>
+</div>
+<button class="w-full bg-gradient-to-r from-primary to-primary-dim text-on-primary py-4 rounded-xl font-bold font-headline text-lg glow-primary hover:opacity-90 active:scale-[0.98] transition-all duration-200" type="submit">
+Kirish
+</button>
+</form>
+
+<div class="mt-8 flex items-center gap-4">
+<div class="h-px flex-grow bg-outline-variant/30"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Yoki davom eting</span>
+<div class="h-px flex-grow bg-outline-variant/30"></div>
+</div>
+
+<div class="mt-8 grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-3 bg-surface-container-high hover:bg-surface-bright py-3 rounded-xl transition-all duration-300 border border-outline-variant/10">
+<span class="material-symbols-outlined text-lg">google</span>
+<span class="font-semibold text-sm">Google</span>
+</button>
+<button class="flex items-center justify-center gap-3 bg-surface-container-high hover:bg-surface-bright py-3 rounded-xl transition-all duration-300 border border-outline-variant/10">
+<span class="material-symbols-outlined text-lg">phone_iphone</span>
+<span class="font-semibold text-sm">Telefon</span>
+</button>
+</div>
+
+<p class="mt-10 text-center text-on-surface-variant">
+Hisobingiz yo'qmi?
+<a class="text-primary font-bold hover:underline ml-1" href="/">Ro'yxatdan o'ting</a>
+</p>
+</div>
+</section>
+</main>
+
+<footer class="w-full py-12 border-t border-slate-800/20 bg-slate-950">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="font-manrope text-sm font-bold text-slate-300">Gigimon Moliyaviy Intellekt</div>
+<div class="flex gap-6">
+<a class="text-slate-500 hover:text-sky-400 transition-colors font-inter text-xs tracking-wide" href="#">Maxfiylik Siyosati</a>
+<a class="text-slate-500 hover:text-sky-400 transition-colors font-inter text-xs tracking-wide" href="#">Xizmat Shartlari</a>
+</div>
+<div class="font-inter text-xs tracking-wide text-slate-500">© 2026 Gigimon Moliyaviy Intellekt</div>
+</div>
+</footer>
+
+<script>
+const API_BASE = window.location.origin;
+
+if (localStorage.getItem('gigimon_token')) {
+    window.location.href = '/dashboard.html';
+}
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById('error-msg');
+    errorEl.classList.add('hidden');
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok) {
+            errorEl.textContent = data.detail || 'Kirish amalga oshmadi';
+            errorEl.classList.remove('hidden');
+            return;
+        }
+        
+        localStorage.setItem('gigimon_token', data.access_token);
+        localStorage.setItem('gigimon_user_id', data.user_id);
+        window.location.href = '/dashboard.html';
+    } catch (err) {
+        errorEl.textContent = 'Ulanish xatosi. Server ishlamoqdami?';
+        errorEl.classList.remove('hidden');
+    }
+});
+</script>
+</body>
+</html>

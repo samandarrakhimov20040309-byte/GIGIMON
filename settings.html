@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sozlamalar | Gigimon Trading Platform</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+body { background-color: #060e20; color: #dee5ff; font-family: Inter, sans-serif; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+.glass-panel { background: rgba(25, 37, 64, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-full z-40 p-4 w-64" style="background-color: #0f1930; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(8, 74, 110, 0.1);">
+<div class="mb-10 px-4">
+<h1 class="font-headline font-extrabold text-2xl tracking-tighter" style="color: #3bbffa; font-family: Manrope, sans-serif;">Gigimon Intelligence</h1>
+<p class="text-xs mt-1" style="color: #a3aac4;">Pro Treyder</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a href="/dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a href="/add-trade.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">add_chart</span>
+Trade Qo'shish
+</a>
+<a href="/history.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">history</span>
+Trade Tarixi
+</a>
+<a href="/analytics.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">analytics</span>
+Tahlil
+</a>
+<a href="/notifications.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined relative">notifications<span id="bell-badge" class="hidden absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">0</span></span>
+Bildirishnomalar
+</a>
+<a href="/settings.html" class="flex items-center gap-3 rounded-lg px-4 py-3 border-l-4 font-medium text-sm" style="background-color: #192540; color: #3bbffa; border-color: #3bbffa;">
+<span class="material-symbols-outlined">settings</span>
+Sozlamalar
+</a>
+</nav>
+<div class="mt-auto space-y-4">
+<div class="p-4 rounded-xl" style="background-color: rgba(59, 191, 250, 0.1); border: 1px solid rgba(59, 191, 250, 0.2);">
+<p class="text-xs font-bold mb-2 uppercase tracking-wider" style="color: #3bbffa;">Faol Reja</p>
+<button class="w-full py-2 rounded-lg text-sm font-bold transition-colors" style="background-color: #3bbffa; color: #00374d;">Pro'ga O'tish</button>
+</div>
+<div class="space-y-1">
+<div onclick="logout()" class="flex items-center gap-3 px-4 py-3 transition-all text-sm cursor-pointer" style="color: #a3aac4;">
+<span class="material-symbols-outlined">logout</span>
+Chiqish
+</div>
+</div>
+</div>
+</aside>
+
+<header class="lg:hidden fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16" style="background-color: rgba(6, 14, 32, 0.9); backdrop-filter: blur(24px);">
+<span class="text-2xl font-black tracking-tighter" style="color: #3bbffa;">Gigimon</span>
+<div class="flex gap-4" style="color: #3bbffa;">
+<a href="/notifications.html"><span class="material-symbols-outlined">notifications</span></a>
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</header>
+
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-64 min-h-screen relative overflow-x-hidden" style="background-color: #060e20;">
+
+<!-- Settings Canvas -->
+<div class="max-w-5xl mx-auto px-12 py-12">
+<header class="mb-16">
+<h1 class="text-4xl font-extrabold font-headline tracking-tight text-white mb-2">Tizim Sozlamalari</h1>
+<p class="text-on-surface-variant font-body">Terminal konfiguratsiyasini, global sozlamalarni va hisob ma'lumotlarini boshqaring.</p>
+</header>
+
+<!-- Bento Layout Settings -->
+<div class="grid grid-cols-12 gap-8">
+
+<!-- Profile Section (Large Card) -->
+<section class="col-span-12 lg:col-span-8 bg-surface-container rounded-2xl p-8 border border-outline-variant/5">
+<div class="flex items-start justify-between mb-8">
+<div>
+<h2 class="text-xl font-bold font-headline mb-1 text-white">Profil Ma'lumotlari</h2>
+<p class="text-sm text-on-surface-variant">Gigimon Jurnali uchun ochiq va yopiq shaxsiy ma'lumotlar.</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="relative group">
+<label for="avatar-upload" class="cursor-pointer">
+<div id="profile-img-container" class="w-32 h-32 rounded-2xl overflow-hidden bg-surface-container-highest border border-outline-variant/20 shadow-[0_0_20px_rgba(0,0,0,0.5)] relative">
+<img id="profile-img" class="w-full h-full object-cover" src="" alt="Profil rasmi"/>
+<div id="upload-overlay" class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-3xl">add_photo_alternate</span>
+</div>
+</div>
+</label>
+<input id="avatar-upload" type="file" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)"/>
+<div class="absolute -bottom-2 -right-2 bg-primary p-2 rounded-lg text-on-primary shadow-xl cursor-pointer" onclick="document.getElementById('avatar-upload').click()">
+<span class="material-symbols-outlined text-sm">edit</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-x-12 gap-y-6 flex-1">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">To'liq Ism</p>
+<input id="display-name-input" class="w-full bg-[#0f1930] border border-[#2d3a5c] rounded-lg px-3 py-2 text-base font-semibold text-white outline-none focus:ring-2 focus:ring-[var(--accent-color,#3bbffa)]" style="background-color: #0f1930; color: #dee5ff;" type="text" placeholder="Ismingizni kiriting"/>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Elektron Pochta</p>
+<input id="email-input" class="w-full bg-[#0f1930] border border-[#2d3a5c] rounded-lg px-3 py-2 text-base font-semibold text-white outline-none focus:ring-2 focus:ring-[var(--accent-color,#3bbffa)]" style="background-color: #0f1930; color: #dee5ff;" type="email" placeholder="email@example.com"/>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Treiching ID</p>
+<p id="user-id" class="text-base font-semibold text-white">#GIGI-000</p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Mintaqa</p>
+<div class="flex items-center gap-2">
+<span class="text-base font-semibold text-white">Markaziy Osiyo / O'zbekiston</span>
+<span class="text-xs text-on-surface-variant px-2 py-0.5 bg-surface-container-highest rounded-full">UTC+5</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-outline-variant/10">
+<button onclick="saveProfile()" class="px-6 py-3 rounded-xl font-bold text-sm transition-all" style="background-color: var(--accent-color, #3bbffa); color: #00374d;">
+O'zgartirishlarni Saqlash
+</button>
+</div>
+</section>
+
+<!-- Upgrade to Pro Card -->
+<section class="col-span-12 lg:col-span-4 rounded-2xl relative overflow-hidden group flex flex-col" style="background: linear-gradient(135deg, #0f1930 0%, #192540 100%); border: 2px solid var(--accent-color, #3bbffa); box-shadow: 0 0 30px rgba(59,191,250,0.15);">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
+<span class="material-symbols-outlined text-9xl" style="font-variation-settings: 'FILL' 1; color: var(--accent-color, #3bbffa);"> workspace_premium</span>
+</div>
+<div class="relative z-10 p-8 flex-1">
+<h2 class="text-2xl font-black font-headline mb-2" style="color: var(--accent-color, #3bbffa);">Pro'ga O'tish</h2>
+<p class="text-sm mb-6" style="color: #a3aac4;">Institusional darajadagi intellekt va cheksiz jurnal sig'imi.</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-sm font-semibold" style="color: #dee5ff;">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1; color: #6bff8f;">check_circle</span>
+AI Tushunchalar
+</li>
+<li class="flex items-center gap-3 text-sm font-semibold" style="color: #dee5ff;">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1; color: #6bff8f;">check_circle</span>
+Cheksiz Trade Loglar
+</li>
+<li class="flex items-center gap-3 text-sm font-semibold" style="color: #dee5ff;">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1; color: #6bff8f;">check_circle</span>
+Real Vaqt Risk Ogohlantirishlari
+</li>
+</ul>
+</div>
+<div class="p-8 pt-0">
+<button class="w-full py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-2xl" style="background-color: var(--accent-color, #3bbffa); color: #00374d;">
+Pro'ga O'tish
+</button>
+</div>
+</section>
+
+<!-- Manual Balance Section -->
+<section class="col-span-12 bg-surface-container rounded-2xl p-8 border border-outline-variant/5">
+<h2 class="text-xl font-bold font-headline mb-2 text-white">Boshlang'ich Balans</h2>
+<p class="text-sm text-on-surface-variant mb-6">MT5 hisob ulanmagan bo'lsa, trading uchun asosiy balansni kiriting. Barcha tahlillar shu qiymatga nisbatan hisoblanadi.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Boshlang'ich Balans (USD)</p>
+<input id="initial-balance" class="w-full bg-[#0f1930] border border-[#2d3a5c] rounded-lg px-3 py-2 text-base font-semibold text-white outline-none focus:ring-2 focus:ring-[var(--accent-color,#3bbffa)]" style="background-color: #0f1930; color: #dee5ff;" type="number" step="0.01" placeholder="10000.00"/>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Joriy Balans</p>
+<p id="current-balance-display" class="text-base font-semibold text-white">$0.00</p>
+</div>
+</div>
+<button id="balance-saved" onclick="saveInitialBalance()" class="mt-4 px-6 py-3 rounded-xl font-bold text-sm transition-all" style="background-color: var(--accent-color, #3bbffa); color: #00374d;">
+Saqlash
+</button>
+</section>
+
+<!-- AI Integration Section -->
+<section class="col-span-12 lg:col-span-6 rounded-2xl p-8" style="background-color: #0f1930; border: 1px solid rgba(59, 191, 250, 0.15);">
+<h2 class="text-xl font-bold font-headline mb-6 flex items-center gap-2" style="color: white;">
+<span class="material-symbols-outlined" style="color: var(--accent-color, #3bbffa);">smart_toy</span>
+AI Integration
+</h2>
+<p class="text-sm mb-6" style="color: #a3aac4;">AI tahlil uchun OpenAI yoki Gemini API kalitingizni kiriting.</p>
+<div class="space-y-4">
+<div>
+<label class="text-xs font-bold uppercase tracking-widest mb-2 block" style="color: #a3aac4;">AI Provayder</label>
+<select id="ai-provider" class="w-full rounded-xl px-4 py-3 border-none focus:ring-2 text-sm" style="background-color: #192540; color: #dee5ff;">
+<option value="openai">OpenAI</option>
+<option value="gemini">Gemini (bepul)</option>
+</select>
+</div>
+<div>
+<label class="text-xs font-bold uppercase tracking-widest mb-2 block" style="color: #a3aac4;">API Key</label>
+<input id="ai-api-key" class="w-full rounded-xl px-4 py-3 border-none focus:ring-2 font-mono text-sm" style="background-color: #192540; color: #dee5ff;" type="password" placeholder="API kalitingiz..."/>
+</div>
+<div>
+<p class="text-xs" style="color: #a3aac4;">
+OpenAI kaliti: <a href="https://platform.openai.com/api-keys" target="_blank" style="color: var(--accent-color, #3bbffa);" class="underline">platform.openai.com</a>
+&middot;
+Gemini kaliti: <a href="https://aistudio.google.com/apikey" target="_blank" style="color: var(--accent-color, #3bbffa);" class="underline">aistudio.google.com</a>
+</p>
+</div>
+<div class="flex items-center gap-3">
+<button onclick="saveAiApiKey()" class="px-6 py-3 rounded-xl font-bold text-sm transition-all" style="background-color: var(--accent-color, #3bbffa); color: #00374d;">
+Saqlash
+</button>
+<span id="ai-key-status" class="text-xs" style="color: #a3aac4;"></span>
+</div>
+</div>
+</section>
+
+<!-- Theme Colors Section -->
+<section class="col-span-12 bg-surface-container rounded-2xl p-8 border border-outline-variant/5">
+<h2 class="text-xl font-bold font-headline mb-6 text-white">Rang Sozlamalari</h2>
+<p class="text-sm text-on-surface-variant mb-6">O'zingizga yoqqan rangni tanlang. Bu rang butun interfeysda qo'llaniladi.</p>
+<div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
+<div onclick="setAccentColor('#3bbffa', '#05a9e3')" class="cursor-pointer group">
+<div class="w-full h-16 rounded-xl bg-[#3bbffa] border-4 border-transparent group-hover:border-white transition-all shadow-lg"></div>
+<p class="text-center text-xs mt-2 text-on-surface-variant">Ko'k</p>
+</div>
+<div onclick="setAccentColor('#6bff8f', '#4cd968')" class="cursor-pointer group">
+<div class="w-full h-16 rounded-xl bg-[#6bff8f] border-4 border-transparent group-hover:border-white transition-all shadow-lg"></div>
+<p class="text-center text-xs mt-2 text-on-surface-variant">Yashil</p>
+</div>
+<div onclick="setAccentColor('#ff716c', '#e74c3c')" class="cursor-pointer group">
+<div class="w-full h-16 rounded-xl bg-[#ff716c] border-4 border-transparent group-hover:border-white transition-all shadow-lg"></div>
+<p class="text-center text-xs mt-2 text-on-surface-variant">Qizil</p>
+</div>
+<div onclick="setAccentColor('#ffb148', '#f39c12')" class="cursor-pointer group">
+<div class="w-full h-16 rounded-xl bg-[#ffb148] border-4 border-transparent group-hover:border-white transition-all shadow-lg"></div>
+<p class="text-center text-xs mt-2 text-on-surface-variant">Sariq</p>
+</div>
+<div onclick="setAccentColor('#a855f7', '#9333ea')" class="cursor-pointer group">
+<div class="w-full h-16 rounded-xl bg-[#a855f7] border-4 border-transparent group-hover:border-white transition-all shadow-lg"></div>
+<p class="text-center text-xs mt-2 text-on-surface-variant">Siyoh</p>
+</div>
+<div onclick="setAccentColor('#ec4899', '#db2777')" class="cursor-pointer group">
+<div class="w-full h-16 rounded-xl bg-[#ec4899] border-4 border-transparent group-hover:border-white transition-all shadow-lg"></div>
+<p class="text-center text-xs mt-2 text-on-surface-variant">Pushti</p>
+</div>
+<div onclick="setAccentColor('#06b6d4', '#0891b2')" class="cursor-pointer group">
+<div class="w-full h-16 rounded-xl bg-[#06b6d4] border-4 border-transparent group-hover:border-white transition-all shadow-lg"></div>
+<p class="text-center text-xs mt-2 text-on-surface-variant">Cián</p>
+</div>
+<div onclick="setAccentColor('#f97316', '#ea580c')" class="cursor-pointer group">
+<div class="w-full h-16 rounded-xl bg-[#f97316] border-4 border-transparent group-hover:border-white transition-all shadow-lg"></div>
+<p class="text-center text-xs mt-2 text-on-surface-variant">Apelsin</p>
+</div>
+</div>
+</section>
+
+<!-- Appearance Section -->
+<section class="col-span-12 lg:col-span-6 bg-surface-container rounded-2xl p-8 border border-outline-variant/5">
+<h2 class="text-xl font-bold font-headline mb-6 text-white">Ko'rinish</h2>
+<div class="grid grid-cols-2 gap-4">
+<div onclick="setTheme('light')" class="relative cursor-pointer group">
+<div class="h-32 rounded-xl bg-slate-100 border-2 border-transparent group-hover:border-slate-300 overflow-hidden transition-all flex flex-col p-3">
+<div class="w-full h-2 bg-slate-300 rounded mb-2"></div>
+<div class="flex gap-2 mb-2">
+<div class="w-1/2 h-8 bg-white shadow-sm rounded"></div>
+<div class="w-1/2 h-8 bg-white shadow-sm rounded"></div>
+</div>
+<div class="w-3/4 h-2 bg-slate-200 rounded"></div>
+</div>
+<div class="flex items-center justify-between mt-3 px-1">
+<span class="text-xs font-semibold text-slate-400">Yorug' Protokol</span>
+<span class="w-4 h-4 rounded-full border-2 border-outline-variant"></span>
+</div>
+</div>
+<div onclick="setTheme('dark')" class="relative cursor-pointer group">
+<div id="dark-preview" class="h-32 rounded-xl border-2 overflow-hidden transition-all flex flex-col p-3 shadow-[0_0_20px_rgba(59,191,250,0.2)]" style="background-color: #060e20; border-color: var(--accent-color, #3bbffa);">
+<div class="w-full h-2 rounded mb-2" style="background-color: #192540;"></div>
+<div class="flex gap-2 mb-2">
+<div class="w-1/2 h-8 rounded" style="background-color: #0f1930;"></div>
+<div class="w-1/2 h-8 rounded" style="background-color: #0f1930;"></div>
+</div>
+<div class="w-3/4 h-2 rounded" style="background-color: #091328;"></div>
+</div>
+<div class="flex items-center justify-between mt-3 px-1">
+<span class="text-xs font-semibold text-white">Qorong'i Terminal</span>
+<span class="w-4 h-4 rounded-full flex items-center justify-center" style="background-color: var(--accent-color, #3bbffa);">
+<div class="w-2 h-2 rounded-full bg-white"></div>
+</span>
+</div>
+</div>
+</div>
+<div class="mt-8 flex items-center justify-between pt-6 border-t border-outline-variant/10">
+<div>
+<p class="text-sm font-semibold text-white">Glassmorphism Darajasi</p>
+<p class="text-[10px] text-on-surface-variant">Interfeys shaffofligini sozlang</p>
+</div>
+<input id="glass-slider" class="accent-primary w-32 h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer" type="range" min="0" max="100" value="60" onchange="setGlassmorphism(this.value)"/>
+</div>
+</section>
+
+<!-- Language & Localisation -->
+<section class="col-span-12 lg:col-span-6 bg-surface-container rounded-2xl p-8 border border-outline-variant/5">
+<h2 class="text-xl font-bold font-headline mb-6 text-white">Til va Lokalizatsiya</h2>
+<div class="space-y-6">
+<div>
+<label class="text-[10px] text-on-surface-variant uppercase tracking-widest block mb-2">Tanlangan Til</label>
+<div class="relative">
+<select class="w-full rounded-xl px-4 py-4 text-sm font-medium focus:ring-1 appearance-none outline-none text-white" style="background-color: #0f1930; border: 1px solid #2d3a5c;">
+<option value="uz">O'zbekcha (O'zbekiston)</option>
+<option value="en">English (Global)</option>
+<option value="ru">Русский (Rossiya)</option>
+</select>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+<div>
+<label class="text-[10px] text-on-surface-variant uppercase tracking-widest block mb-2">Valyuta</label>
+<div class="grid grid-cols-3 gap-3">
+<button id="btn-usd" class="py-3 px-4 rounded-xl border-2 text-xs font-bold transition-all" onclick="setCurrency('USD')">USD ($)</button>
+<button id="btn-uzs" class="py-3 px-4 rounded-xl border border-outline-variant/20 text-xs font-bold transition-all" onclick="setCurrency('UZS')">UZS (so'm)</button>
+<button id="btn-eur" class="py-3 px-4 rounded-xl border border-outline-variant/20 text-xs font-bold transition-all" onclick="setCurrency('EUR')">EUR (€)</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/10">
+<div>
+<p class="text-sm font-semibold text-white">Avto Tarjima</p>
+<p class="text-[10px] text-on-surface-variant">Global yangiliklarni mahalliy tilga tarjima qilish</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" id="auto-translate"/>
+<div id="toggle-bg" class="w-11 h-6 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:rounded-full after:h-5 after:w-5 after:transition-all" style="background-color: var(--accent-color, #3bbffa);"></div>
+<div class="absolute left-[3px] top-[6px] w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-5 pointer-events-none"></div>
+</label>
+</div>
+</div>
+</section>
+
+<!-- Notifications & Misc -->
+<section class="col-span-12 bg-surface-container rounded-2xl p-8 border border-outline-variant/5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="h-12 w-12 bg-tertiary/10 rounded-xl flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<h3 class="text-white font-bold font-headline">Beta Imkoniyatlariga Kirish</h3>
+<p class="text-sm text-on-surface-variant">Global chiqarishdan oldin yangi Quantum Bashorat tizimini sinab ko'ring.</p>
+</div>
+</div>
+<button class="bg-surface-container-highest px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest border border-outline-variant/20 hover:bg-surface-bright transition-all">Kirishni So'rash</button>
+</div>
+</section>
+
+</div>
+
+<!-- Footer Meta -->
+<footer class="mt-20 flex justify-between items-center text-on-surface-variant/40">
+<p class="text-[10px] uppercase tracking-[0.2em]">Gigimon Intelligence Corp © 2026</p>
+<div class="flex gap-6 text-[10px] uppercase tracking-widest">
+<a class="hover:text-primary transition-colors" href="#">Maxfiylik Jurnali</a>
+<a class="hover:text-primary transition-colors" href="#">Treiching Shartlari</a>
+<a class="hover:text-primary transition-colors" href="#">Muvofiqlik</a>
+</div>
+</footer>
+</div>
+
+
+</main>
+
+<script>
+const API_BASE = window.location.origin;
+
+function loadSettings() {
+    const settings = JSON.parse(localStorage.getItem('gigimon_settings') || '{}');
+    
+    if (settings.accentColor) {
+        setAccentColor(settings.accentColor, settings.accentColorDark || settings.accentColor);
+    }
+    
+    if (settings.currency) {
+        setCurrency(settings.currency);
+    }
+    
+    if (settings.glassOpacity) {
+        setGlassmorphism(settings.glassOpacity);
+    }
+}
+
+async function saveSettings() {
+    const settings = {
+        accentColor: document.documentElement.style.getPropertyValue('--accent-color') || '#3bbffa',
+        accentColorDark: document.documentElement.style.getPropertyValue('--accent-color-dark') || '#05a9e3',
+        currency: localStorage.getItem('gigimon_currency') || 'USD',
+        glassOpacity: localStorage.getItem('gigimon_glass') || '60',
+        displayName: document.getElementById('display-name-input')?.value || '',
+        email: document.getElementById('email-input')?.value || '',
+    };
+    const token = localStorage.getItem('gigimon_token');
+    await fetch(`${API_BASE}/settings/batch`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings)
+    });
+}
+
+function setAccentColor(color, colorDark) {
+    document.documentElement.style.setProperty('--accent-color', color);
+    document.documentElement.style.setProperty('--accent-color-dark', colorDark);
+    
+    const settingsLink = document.getElementById('settings-link');
+    if (settingsLink) {
+        settingsLink.style.color = color;
+        settingsLink.style.borderColor = color;
+        settingsLink.style.boxShadow = `0 0 15px ${color}25`;
+    }
+    
+    saveSettings();
+}
+
+function setTheme(theme) {
+    if (theme === 'dark') {
+        document.body.classList.add('dark');
+    } else {
+        document.body.classList.remove('dark');
+    }
+}
+
+function setCurrency(currency) {
+    localStorage.setItem('gigimon_currency', currency);
+    
+    document.querySelectorAll('[id^="btn-"]').forEach(btn => {
+        btn.classList.remove('border-primary', 'bg-primary/10', 'text-primary');
+        btn.classList.add('border-outline-variant/20', 'text-on-surface-variant');
+    });
+    
+    const activeBtn = document.getElementById('btn-' + currency.toLowerCase());
+    if (activeBtn) {
+        activeBtn.classList.remove('border-outline-variant/20', 'text-on-surface-variant');
+        activeBtn.classList.add('border-primary', 'bg-primary/10', 'text-primary');
+    }
+}
+
+function setGlassmorphism(value) {
+    localStorage.setItem('gigimon_glass', value);
+    document.querySelectorAll('.glass-panel').forEach(el => {
+        el.style.backdropFilter = `blur(${value / 5}px)`;
+    });
+}
+
+function handleAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const avatarData = e.target.result;
+            localStorage.setItem('gigimon_avatar', avatarData);
+            
+            const profileImg = document.getElementById('profile-img');
+            const topAvatarImg = document.getElementById('top-avatar-img');
+            
+            if (profileImg) profileImg.src = avatarData;
+            if (topAvatarImg) topAvatarImg.src = avatarData;
+            
+            alert('Rasm muvaffaqiyatli saqlandi! (Brauzerni yangilamang!)');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+async function loadUserInfo() {
+    const token = localStorage.getItem('gigimon_token');
+    if (!token) {
+        window.location.href = '/';
+        return;
+    }
+    try {
+        const res = await fetch(`${API_BASE}/users/me`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Unauthorized');
+        const data = await res.json();
+        
+        const displayName = data.display_name || localStorage.getItem('gigimon_display_name') || 'Treyder';
+        document.querySelector('aside p.text-xs').textContent = displayName;
+        document.getElementById('display-name-input').value = data.display_name || localStorage.getItem('gigimon_display_name') || '';
+        document.getElementById('email-input').value = data.email || localStorage.getItem('gigimon_email') || '';
+        document.getElementById('user-id').textContent = '#GIGI-' + (data.id ? data.id.slice(0, 4).toUpperCase() : '0000');
+        
+        const savedAvatar = localStorage.getItem('gigimon_avatar');
+        const profileImg = document.getElementById('profile-img');
+        const topAvatarImg = document.getElementById('top-avatar-img');
+        
+        if (savedAvatar) {
+            if (profileImg) profileImg.src = savedAvatar;
+            if (topAvatarImg) topAvatarImg.src = savedAvatar;
+        } else {
+            if (profileImg) profileImg.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(displayName || 'U') + '&background=192540&color=3bbffa&size=128';
+            if (topAvatarImg) topAvatarImg.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(displayName || 'U') + '&background=192540&color=3bbffa&size=64';
+        }
+    } catch (e) {
+        console.error('Xatolik:', e);
+    }
+}
+
+async function saveProfile() {
+    const token = localStorage.getItem('gigimon_token');
+    const displayName = document.getElementById('display-name-input').value;
+    const avatar = localStorage.getItem('gigimon_avatar');
+    
+    try {
+        const res = await fetch(`${API_BASE}/users/me`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ display_name: displayName })
+        });
+        
+        if (res.ok) {
+            const data = await res.json();
+            localStorage.setItem('gigimon_display_name', data.display_name || displayName);
+            localStorage.setItem('gigimon_email', data.email || '');
+            
+            document.querySelector('aside p.text-xs').textContent = data.display_name || displayName;
+            alert('Profil muvaffaqiyatli saqlandi!');
+        } else {
+            const data = await res.json();
+            alert('Xatolik: ' + (data.detail || 'Noma\'lum xatolik'));
+        }
+    } catch (e) {
+        alert('Xatolik: ' + e.message);
+    }
+}
+
+function logout() {
+    localStorage.removeItem('gigimon_token');
+    window.location.href = '/';
+}
+
+loadSettings();
+loadUserInfo();
+setCurrency(localStorage.getItem('gigimon_currency') || 'USD');
+
+async function loadInitialBalance() {
+    const balanceInput = document.getElementById('initial-balance');
+    const currentDisplay = document.getElementById('current-balance-display');
+    const savedBtn = document.getElementById('balance-saved');
+    const tk = localStorage.getItem('gigimon_token');
+    
+    let mt5Balance = 0;
+    try {
+        const summaryRes = await fetch(`${API_BASE}/ingest/mt5/account-summary`, {
+            headers: { 'Authorization': `Bearer ${tk}` }
+        });
+        if (summaryRes.ok) {
+            const summary = await summaryRes.json();
+            if (summary.total_balance > 0) {
+                mt5Balance = summary.total_balance;
+            }
+        }
+    } catch (err) {}
+    
+    try {
+        const settingsRes = await fetch(`${API_BASE}/settings`, {
+            headers: { 'Authorization': `Bearer ${tk}` }
+        });
+        if (settingsRes.ok) {
+            const userSettings = await settingsRes.json();
+            const manualBalance = parseFloat(userSettings['initial_balance'] || '0');
+            if (manualBalance > 0) {
+                balanceInput.value = manualBalance;
+                currentDisplay.textContent = `$${manualBalance.toFixed(2)} (qo'lda)`;
+            } else if (mt5Balance > 0) {
+                balanceInput.value = mt5Balance;
+                currentDisplay.textContent = `$${mt5Balance.toFixed(2)} (MT5 dan)`;
+            } else {
+                currentDisplay.textContent = 'Kiritilmagan';
+                balanceInput.value = 10000;
+            }
+        }
+    } catch (err) {
+        const manualBalance = parseFloat(localStorage.getItem('gigimon_initial_balance') || '0');
+        if (manualBalance > 0) {
+            balanceInput.value = manualBalance;
+            currentDisplay.textContent = `$${manualBalance.toFixed(2)} (qo'lda)`;
+        } else if (mt5Balance > 0) {
+            balanceInput.value = mt5Balance;
+            currentDisplay.textContent = `$${mt5Balance.toFixed(2)} (MT5 dan)`;
+        } else {
+            currentDisplay.textContent = 'Kiritilmagan';
+        }
+    }
+    
+    balanceInput.addEventListener('input', () => {
+        savedBtn.classList.remove('hidden');
+    });
+}
+
+async function saveInitialBalance() {
+    const balanceInput = document.getElementById('initial-balance');
+    const balance = parseFloat(balanceInput.value) || 0;
+    if (balance > 0) {
+        const token = localStorage.getItem('gigimon_token');
+        const res = await fetch(`${API_BASE}/settings/batch`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ initial_balance: balance.toString() })
+        });
+        if (res.ok) {
+            document.getElementById('current-balance-display').textContent = `$${balance.toFixed(2)} (saqlangan)`;
+            document.getElementById('current-balance-display').style.color = '#6bff8f';
+            setTimeout(() => { document.getElementById('current-balance-display').style.color = 'white'; }, 2000);
+        }
+    } else {
+        alert("Balans 0 dan katta bo'lishi kerak");
+    }
+}
+
+async function loadAiApiKey() {
+    const token = localStorage.getItem('gigimon_token');
+    try {
+        const res = await fetch(`${API_BASE}/settings`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+            const settings = await res.json();
+            if (settings['ai_api_key']) {
+                document.getElementById('ai-api-key').value = settings['ai_api_key'];
+                document.getElementById('ai-key-status').textContent = "Kalit o'rnatilgan";
+                document.getElementById('ai-key-status').style.color = '#6bff8f';
+            }
+            if (settings['ai_provider']) {
+                document.getElementById('ai-provider').value = settings['ai_provider'];
+            }
+        }
+    } catch (err) {}
+}
+
+async function saveAiApiKey() {
+    const key = document.getElementById('ai-api-key').value.trim();
+    const token = localStorage.getItem('gigimon_token');
+    const status = document.getElementById('ai-key-status');
+    if (!key) {
+        status.textContent = "Kalit kiritilmagan";
+        status.style.color = '#ff716c';
+        return;
+    }
+    try {
+        const provider = document.getElementById('ai-provider').value;
+        const res = await fetch(`${API_BASE}/settings/batch`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ai_api_key: key, ai_provider: provider })
+        });
+        if (res.ok) {
+            status.textContent = "Kalit saqlandi!";
+            status.style.color = '#6bff8f';
+            setTimeout(() => { status.textContent = "Kalit o'rnatilgan"; }, 2000);
+        } else {
+            status.textContent = "Xatolik yuz berdi";
+            status.style.color = '#ff716c';
+        }
+    } catch (err) {
+        status.textContent = "Xatolik";
+        status.style.color = '#ff716c';
+    }
+}
+
+loadInitialBalance();
+loadAiApiKey();
+
+const token = localStorage.getItem('gigimon_token');
+async function checkUnreadCount() {
+    try {
+        const res = await fetch(`${API_BASE}/notifications/unread-count`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 401) { localStorage.removeItem('gigimon_token'); window.location.href = '/'; return; }
+        if (res.ok) {
+            const data = await res.json();
+            const badge = document.getElementById('bell-badge');
+            if (badge) {
+                if (data.count > 0) {
+                    badge.textContent = data.count > 99 ? '99+' : data.count;
+                    badge.classList.remove('hidden');
+                    badge.classList.add('flex');
+                } else {
+                    badge.classList.add('hidden');
+                    badge.classList.remove('flex');
+                }
+            }
+        }
+    } catch (err) {}
+}
+checkUnreadCount();
+setInterval(checkUnreadCount, 10000);
+</script>
+<script src="/ai-assistant.js"></script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trade Qo'shish | Gigimon Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+body { background-color: #060e20; }
+.glass-panel { background: rgba(25, 37, 64, 0.6); backdrop-filter: blur(20px); }
+.robot-pulse { box-shadow: 0 0 20px rgba(59, 191, 250, 0.2); }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
+</head>
+<body style="background-color: #060e20; color: #dee5ff; font-family: Inter, sans-serif;">
+
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-full z-40 p-4 w-64" style="background-color: #0f1930; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(8, 74, 110, 0.1);">
+<div class="mb-10 px-4">
+<h1 class="font-headline font-extrabold text-2xl tracking-tighter" style="color: #3bbffa; font-family: Manrope, sans-serif;">Gigimon Intelligence</h1>
+<p class="text-xs mt-1" style="color: #a3aac4;">Pro Treyder</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a href="/dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a href="/add-trade.html" class="flex items-center gap-3 rounded-lg px-4 py-3 border-l-4 font-medium text-sm" style="background-color: #192540; color: #3bbffa; border-color: #3bbffa;">
+<span class="material-symbols-outlined">add_chart</span>
+Trade Qo'shish
+</a>
+<a href="/history.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">history</span>
+Trade Tarixi
+</a>
+<a href="/analytics.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">analytics</span>
+Tahlil
+</a>
+<a href="/notifications.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined relative">notifications<span id="bell-badge" class="hidden absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">0</span></span>
+Bildirishnomalar
+</a>
+<a href="/settings.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">settings</span>
+Sozlamalar
+</a>
+</nav>
+<div class="mt-auto space-y-4">
+<div class="p-4 rounded-xl" style="background-color: rgba(59, 191, 250, 0.1); border: 1px solid rgba(59, 191, 250, 0.2);">
+<p class="text-xs font-bold mb-2 uppercase tracking-wider" style="color: #3bbffa;">Faol Reja</p>
+<button class="w-full py-2 rounded-lg text-sm font-bold transition-colors" style="background-color: #3bbffa; color: #00374d;">Pro'ga O'tish</button>
+</div>
+<div class="space-y-1">
+<div onclick="logout()" class="flex items-center gap-3 px-4 py-3 transition-all text-sm cursor-pointer" style="color: #a3aac4;">
+<span class="material-symbols-outlined">logout</span>
+Chiqish
+</div>
+</div>
+</div>
+</aside>
+
+<header class="lg:hidden fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16" style="background-color: rgba(6, 14, 32, 0.9); backdrop-filter: blur(24px);">
+<span class="text-2xl font-black tracking-tighter" style="color: #3bbffa;">Gigimon</span>
+<div class="flex gap-4" style="color: #3bbffa;">
+<a href="/notifications.html"><span class="material-symbols-outlined">notifications</span></a>
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</header>
+
+<main class="lg:ml-64 pt-20 lg:pt-10 pb-32 px-6 lg:px-12 max-w-7xl mx-auto">
+
+<header class="mb-12">
+<h2 class="font-headline text-4xl font-extrabold tracking-tight mb-2" style="color: white; font-family: Manrope, sans-serif;">Tradelarni Qo'shish</h2>
+<p class="max-w-2xl" style="color: #a3aac4;">Brokeringizni ulang, trade loglarni yuklang yoki pozitsiyalarni qo'lda yozib qoling.</p>
+</header>
+
+<div id="error-msg" class="hidden p-4 rounded-xl text-sm mb-4" style="background-color: #9f0519; color: #ff716c;"></div>
+<div id="success-msg" class="hidden p-4 rounded-xl text-sm mb-4" style="background-color: rgba(6, 50, 6, 0.8); color: #6bff8f;"></div>
+
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+
+<section class="md:col-span-7 space-y-8">
+<div class="rounded-3xl p-8" style="background-color: #0f1930; border: 1px solid rgba(64, 72, 93, 0.1); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg" style="background-color: rgba(59, 191, 250, 0.1);">
+<span class="material-symbols-outlined" style="color: var(--accent-color, #3bbffa);">edit_note</span>
+</div>
+<h3 class="font-headline text-xl font-bold" style="color: white; font-family: Manrope, sans-serif;">Qo'lda Jurnal Yuritish</h3>
+</div>
+<span class="text-xs font-medium px-3 py-1 rounded-full uppercase tracking-tighter" style="background-color: #192540; color: #a3aac4;">Qadam-bay-qadam</span>
+</div>
+
+<form id="trade-form" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="space-y-2 sm:col-span-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Market Turi</label>
+<select id="market-select" class="w-full rounded-xl p-3 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" onchange="updateForm(); document.getElementById('trade-type').value='spot';">
+<option value="crypto">Crypto (BTC, ETH, SOL...)</option>
+<option value="forex">Forex (EURUSD, GBPUSD...)</option>
+<option value="stock">Aksya (AAPL, TSLA, GOOGL...)</option>
+</select>
+</div>
+
+<div id="type-row" class="space-y-2 sm:col-span-2 hidden">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Tanlash Turi</label>
+<select id="trade-type" class="w-full rounded-xl p-3 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" onchange="updateForm()">
+<option value="spot">Spot (Hozirgi narxda)</option>
+<option value="futures">Futures (Kelajakda)</option>
+</select>
+</div>
+
+<div id="leverage-row" class="space-y-2 hidden">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Leverage (x)</label>
+<select name="leverage" class="w-full rounded-xl p-3 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;">
+<option value="1">1x (1x margin)</option>
+<option value="2">2x (2x margin)</option>
+<option value="5">5x (5x margin)</option>
+<option value="10">10x (10x margin)</option>
+<option value="20">20x (20x margin)</option>
+<option value="50">50x (50x margin)</option>
+<option value="100">100x (100x margin)</option>
+</select>
+</div>
+
+<div id="usd-row" class="space-y-2 hidden">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">USDda Qiymati</label>
+<input name="usd_value" class="w-full rounded-xl p-3 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" placeholder="1000" type="number" step="0.01"/>
+</div>
+
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Symbol</label>
+<input name="symbol" id="symbol-input" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" placeholder="BTCUSDT" type="text" required/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Side</label>
+<select name="side" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all appearance-none" style="background-color: #192540; color: #dee5ff;" required>
+<option value="buy">OLISH / LONG</option>
+<option value="sell">SOTISH / SHORT</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Quantity</label>
+<input name="qty" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" placeholder="0.50" type="number" step="0.00000001"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Contract Size</label>
+<select name="contract_size" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;">
+<option value="1">1 (Oddiy aksiya/krypto)</option>
+<option value="100">100 (XAUUSD/XAGUSD)</option>
+<option value="100000">100000 (Forex)</option>
+</select>
+<p class="text-[10px] px-1 mt-1" style="color: rgba(163, 170, 196, 0.6);">Standart lot kontrakt hajmi. XAUUSD uchun 100, Forex uchun 100000.</p>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Price</label>
+<input name="price" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" placeholder="1.09500" type="number" step="0.00000001" required/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Fee (optional)</label>
+<input name="fee" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" placeholder="0.00" type="number" step="0.01"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Exit Price (optional)</label>
+<input name="exit_price" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" placeholder="1.10000" type="number" step="0.00000001"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Kirish Sanasi</label>
+<input name="executed_at" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" type="datetime-local" required/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Chiqish Sanasi (ixtiyoriy)</label>
+<input name="exit_at" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" type="datetime-local"/>
+</div>
+<div class="sm:col-span-2 space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest px-1" style="color: #a3aac4;">Izohlar</label>
+<textarea name="notes" rows="3" class="w-full rounded-xl p-4 border-none focus:ring-2 transition-all" style="background-color: #192540; color: #dee5ff;" placeholder="Strategy, market condition, etc."></textarea>
+</div>
+<div class="sm:col-span-2 pt-4">
+<button type="submit" class="w-full py-4 rounded-xl font-bold text-lg transition-all active:scale-[0.98]" style="background: linear-gradient(to right, var(--accent-color, #3bbffa), #05a9e3); color: #00374d; box-shadow: 0 10px 15px -3px rgba(59, 191, 250, 0.1);">Pozitsiyani Yozib Qo'yish</button>
+</div>
+</form>
+</div>
+
+<div class="rounded-3xl p-8" style="background-color: #091328; border: 1px solid rgba(64, 72, 93, 0.05);">
+<h3 class="font-headline text-xl font-bold mb-6" style="color: white; font-family: Manrope, sans-serif;">Broker Integratsiyalari</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<a href="/mt5.html" class="block p-5 rounded-2xl cursor-pointer transition-colors border group" style="background-color: #0f1930; border-color: rgba(64, 72, 93, 0.1);">
+<div class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110" style="background-color: rgba(255, 255, 255, 0.05);">
+<img alt="MetaTrader 5" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAse5KaJaxTP-Yr7qEiNfBud3WiHNR-MCM2hXmP2roOYJVjoabGY2Q4FcpYv2zI1oaAI9ywCW7bwr5DEAQMJ3i9UB6PMaCCUpzbd0K7qjkSC639oWM1uPNRC0gEzngPdF1MlmI9an878bOVl5XQ6MtabV1P2PrPKzpfabdoTQ1lxrcFqNpsMqOiRv_KlSc4Z0PewRFKfkd9ZB1sc9v__K2a901i8iGik5dvREEK5Z3R8-hMtuWmFtKnwXekbArKrIy4zXIJxU8nY84"/>
+</div>
+<h4 class="font-bold" style="color: #dee5ff;">MetaTrader 5</h4>
+<p class="text-xs mt-1" style="color: #a3aac4;">API Sinxronizatsiyasi</p>
+</a>
+<a href="/binance.html" class="block p-5 rounded-2xl cursor-pointer transition-colors border group" style="background-color: #0f1930; border-color: rgba(64, 72, 93, 0.1);">
+<div class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110" style="background-color: rgba(255, 255, 255, 0.05);">
+<img alt="Binance" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyzjr0ZEpKG8V0v_qvXIaNxmYSLrEOXpZXZo9tTdbE2DcTcCXu09IjpKirVxNHCcC3c8kSwFO6qcy0QUfiOdWo-l6wnQ_8Edy_XO5x5o3Gc_J7haJR87xwPDKQzGkbvVH6tlZ0gbvQmDQQKik7na-md51L1airhPOYqHOlU9gnxOl6HO9S4zKtoIE3K1-0mf2w97LI_VoxEycaa6DJRfIsHCfXgwSesf278cLnXDDitTRTO9cMunNm-Irv1KqvtU8o_fxQ9XJQAbE"/>
+</div>
+<h4 class="font-bold" style="color: #dee5ff;">Binance Pro</h4>
+<p class="text-xs mt-1" style="color: #a3aac4;">Faqat O'qish Kalitlari</p>
+</a>
+</div>
+</div>
+</section>
+
+<section class="md:col-span-5 space-y-8">
+<div class="rounded-3xl p-8 h-full flex flex-col" style="background-color: #0f1930; border: 1px solid rgba(64, 72, 93, 0.1);">
+<div class="flex items-center gap-3 mb-8">
+<div class="p-2 rounded-lg" style="background-color: rgba(107, 255, 143, 0.1);">
+<span class="material-symbols-outlined" style="color: #6bff8f;">upload_file</span>
+</div>
+<h3 class="font-headline text-xl font-bold" style="color: white; font-family: Manrope, sans-serif;">CSV Hajmdagi Import</h3>
+</div>
+<div class="flex-1 flex flex-col justify-center rounded-3xl p-10 text-center cursor-pointer transition-all border-2 border-dashed" style="border-color: rgba(64, 72, 93, 0.3);">
+<span class="material-symbols-outlined text-5xl mb-4 transition-colors" style="color: #a3aac4;">cloud_upload</span>
+<h4 class="font-bold text-lg mb-2" style="color: #dee5ff;">Trade logni bu erga tashlang</h4>
+<p class="text-sm mb-6 px-4" style="color: #a3aac4;">Excel yoki CSV fayllarni terminal loglaridan yuklang.</p>
+<button class="mx-auto px-6 py-3 rounded-xl text-sm font-semibold transition-all" style="background-color: #192540; border: 1px solid rgba(64, 72, 93, 0.2); color: #dee5ff;">Fayllarni Tanlash</button>
+</div>
+<div class="mt-8 pt-8" style="border-top: 1px solid rgba(64, 72, 93, 0.1);">
+<div class="flex items-center justify-between">
+<div>
+<h4 class="font-bold text-sm" style="color: white;">Gigimon yangimi?</h4>
+<p class="text-xs" style="color: #a3aac4;">Standart ma'lumot tuzilmasidan foydalaning.</p>
+</div>
+<button class="flex items-center gap-2 font-bold text-xs uppercase tracking-widest hover:underline" style="color: var(--accent-color, #3bbffa);">
+<span class="material-symbols-outlined text-sm">download</span>
+Shablonni Yuklab Olish
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+
+
+
+<style>
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+.animate-ping { animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; }
+</style>
+
+<script>
+const API_BASE = window.location.origin;
+
+function applyAccentColor() {
+    const settings = JSON.parse(localStorage.getItem('gigimon_settings') || '{}');
+    if (settings.accentColor) {
+        document.documentElement.style.setProperty('--accent-color', settings.accentColor);
+        document.documentElement.style.setProperty('--accent-color-dark', settings.accentColorDark || settings.accentColor);
+    }
+}
+applyAccentColor();
+
+const token = localStorage.getItem('gigimon_token');
+
+if (!token) {
+    window.location.href = '/';
+}
+
+function updateForm() {
+    const market = document.getElementById('market-select').value;
+    const tradeType = document.getElementById('trade-type') ? document.getElementById('trade-type').value : 'spot';
+    const input = document.getElementById('symbol-input');
+    const typeRow = document.getElementById('type-row');
+    const leverageRow = document.getElementById('leverage-row');
+    const usdRow = document.getElementById('usd-row');
+    
+    if (market === 'crypto' || market === 'stock') {
+        typeRow.classList.remove('hidden');
+        typeRow.classList.add('grid');
+    } else {
+        typeRow.classList.add('hidden');
+        typeRow.classList.remove('grid');
+    }
+    
+    if (tradeType === 'futures' && (market === 'crypto' || market === 'stock')) {
+        leverageRow.classList.remove('hidden');
+        leverageRow.classList.add('grid');
+        usdRow.classList.remove('hidden');
+        usdRow.classList.add('grid');
+    } else {
+        leverageRow.classList.add('hidden');
+        leverageRow.classList.remove('grid');
+        usdRow.classList.add('hidden');
+        usdRow.classList.remove('grid');
+    }
+    
+    if (market === 'crypto') {
+        input.placeholder = 'BTCUSDT';
+    } else if (market === 'forex') {
+        input.placeholder = 'EURUSD';
+    } else {
+        input.placeholder = 'AAPL';
+    }
+}
+
+async function checkUnreadCount() {
+    try {
+        const res = await fetch(`${API_BASE}/notifications/unread-count`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 401) { localStorage.removeItem('gigimon_token'); window.location.href = '/'; return; }
+        if (res.ok) {
+            const data = await res.json();
+            updateBadge(data.count);
+        }
+    } catch (err) {}
+}
+function updateBadge(count) {
+    const badge = document.getElementById('bell-badge');
+    if (badge) {
+        if (count > 0) {
+            badge.textContent = count > 99 ? '99+' : count;
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+        } else {
+            badge.classList.add('hidden');
+            badge.classList.remove('flex');
+        }
+    }
+}
+checkUnreadCount();
+setInterval(checkUnreadCount, 10000);
+
+async function loadUserInfo() {
+    try {
+        const userRes = await fetch(`${API_BASE}/users/me`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (userRes.ok) {
+            const user = await userRes.json();
+            const displayName = user.display_name || user.email || 'Treyder';
+            document.querySelector('aside p.text-xs').textContent = displayName;
+            
+            const savedAvatar = localStorage.getItem('gigimon_avatar');
+            const settings = JSON.parse(localStorage.getItem('gigimon_settings') || '{}');
+            const topAvatarImg = document.getElementById('top-avatar-img');
+            if (topAvatarImg) {
+                if (savedAvatar || settings.avatar) {
+                    topAvatarImg.src = savedAvatar || settings.avatar;
+                } else {
+                    topAvatarImg.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(displayName) + '&background=192540&color=3bbffa&size=64';
+                }
+            }
+        }
+    } catch (err) {
+        console.error('Error loading user info:', err);
+    }
+}
+loadUserInfo();
+
+document.getElementById('trade-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById('error-msg');
+    const successEl = document.getElementById('success-msg');
+    errorEl.classList.add('hidden');
+    successEl.classList.add('hidden');
+    
+    const form = e.target;
+    const executedAt = new Date(form.executed_at.value).toISOString();
+    const exitAt = form.exit_at.value ? new Date(form.exit_at.value).toISOString() : null;
+    
+    try {
+        const res = await fetch(`${API_BASE}/trades`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                symbol: form.symbol.value.toUpperCase(),
+                side: form.side.value,
+                qty: parseFloat(form.qty.value),
+                contract_size: parseInt(form.contract_size.value) || 1,
+                price: parseFloat(form.price.value),
+                exit_price: form.exit_price.value ? parseFloat(form.exit_price.value) : null,
+                fee: parseFloat(form.fee.value || 0),
+                executed_at: executedAt,
+                exit_at: exitAt,
+                notes: form.notes.value,
+                source: 'manual'
+            })
+        });
+        
+        if (!res.ok) {
+            const data = await res.json();
+            errorEl.textContent = data.detail || 'Failed to save trade';
+            errorEl.classList.remove('hidden');
+            return;
+        }
+        
+        successEl.textContent = 'Trade saved successfully!';
+        successEl.classList.remove('hidden');
+        
+        setTimeout(() => window.location.href = '/dashboard.html', 1500);
+    } catch (err) {
+        errorEl.textContent = 'Connection error. Is the server running?';
+        errorEl.classList.remove('hidden');
+    }
+});
+
+function logout() {
+    localStorage.removeItem('gigimon_token');
+    localStorage.removeItem('gigimon_user_id');
+    window.location.href = '/';
+}
+</script>
+<script src="/ai-assistant.js"></script>
+</body>
+</html>

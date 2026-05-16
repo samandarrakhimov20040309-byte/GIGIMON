@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gigimon Intelligence | AI Tahlil</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+body { background-color: #060e20; color: #dee5ff; font-family: Inter, sans-serif; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.glass-panel { background: rgba(25, 37, 64, 0.6); backdrop-filter: blur(20px); }
+.metric-glow { text-shadow: 0 0 15px rgba(59, 191, 250, 0.3); }
+</style>
+</head>
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-full z-40 p-4 w-64" style="background-color: #0f1930; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 40px rgba(8, 74, 110, 0.1);">
+<div class="mb-10 px-4">
+<h1 class="font-headline font-extrabold text-2xl tracking-tighter" style="color: #3bbffa; font-family: Manrope, sans-serif;">Gigimon Intelligence</h1>
+<p class="text-xs mt-1" style="color: #a3aac4;">Pro Treyder</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a href="/dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a href="/add-trade.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">add_chart</span>
+Trade Qo'shish
+</a>
+<a href="/history.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">history</span>
+Trade Tarixi
+</a>
+<a href="/analytics.html" class="flex items-center gap-3 rounded-lg px-4 py-3 border-l-4 font-medium text-sm" style="background-color: #192540; color: #3bbffa; border-color: #3bbffa;">
+<span class="material-symbols-outlined">analytics</span>
+Tahlil
+</a>
+<a href="/notifications.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined relative">notifications<span id="bell-badge" class="hidden absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">0</span></span>
+Bildirishnomalar
+</a>
+<a href="/settings.html" class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all hover:bg-[#192540]" style="color: #a3aac4;">
+<span class="material-symbols-outlined">settings</span>
+Sozlamalar
+</a>
+</nav>
+<div class="mt-auto space-y-4">
+<div class="p-4 rounded-xl" style="background-color: rgba(59, 191, 250, 0.1); border: 1px solid rgba(59, 191, 250, 0.2);">
+<p class="text-xs font-bold mb-2 uppercase tracking-wider" style="color: #3bbffa;">Faol Reja</p>
+<button class="w-full py-2 rounded-lg text-sm font-bold transition-colors" style="background-color: #3bbffa; color: #00374d;">Pro'ga O'tish</button>
+</div>
+<div class="space-y-1">
+<div onclick="logout()" class="flex items-center gap-3 px-4 py-3 transition-all text-sm cursor-pointer" style="color: #a3aac4;">
+<span class="material-symbols-outlined">logout</span>
+Chiqish
+</div>
+</div>
+</div>
+</aside>
+
+<header class="lg:hidden fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16" style="background-color: rgba(6, 14, 32, 0.9); backdrop-filter: blur(24px);">
+<span class="text-2xl font-black tracking-tighter" style="color: #3bbffa;">Gigimon</span>
+<div class="flex gap-4" style="color: #3bbffa;">
+<a href="/notifications.html"><span class="material-symbols-outlined">notifications</span></a>
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+</header>
+
+<main class="flex-1 lg:ml-64 pt-24 pb-32 px-6 lg:px-12">
+<div id="loading" class="flex items-center justify-center h-64">
+<div class="animate-spin rounded-full h-12 w-12 border-4 border-[var(--accent-color, #3bbffa)] border-t-transparent"></div>
+</div>
+
+<div id="content" class="hidden">
+<section class="mb-12">
+<div class="flex flex-col md:flex-row gap-8 items-start">
+<div class="flex-1">
+<h2 class="font-headline text-4xl font-extrabold mb-2 tracking-tight" style="color: white; font-family: Manrope, sans-serif;">Tahlil <span style="color: var(--accent-color, #3bbffa);">Xulosasi</span></h2>
+<p class="max-w-2xl" style="color: #a3aac4;">Treiching tarixingiz asosida AI tomonidan tahlil qilingan tradelar.</p>
+</div>
+<div class="flex gap-4">
+<div class="rounded-2xl p-4 shadow-lg" style="background-color: #0f1930; border-left: 4px solid #6bff8f;">
+<div class="text-[10px] uppercase tracking-tighter font-bold" style="color: #6bff8f;">G'alaba</div>
+<div id="winRate" class="text-2xl font-headline font-black" style="color: #dee5ff;">0%</div>
+</div>
+<div class="rounded-2xl p-4 shadow-lg" style="background-color: #0f1930; border-left: 4px solid #ffb148;">
+<div class="text-[10px] uppercase tracking-tighter font-bold" style="color: #ffb148;">Jami Foyda/Zarar</div>
+<div id="totalPnL" class="text-2xl font-headline font-black" style="color: #dee5ff;">$0</div>
+</div>
+<div class="rounded-2xl p-4 shadow-lg" style="background-color: #0f1930; border-left: 4px solid var(--accent-color, #3bbffa);">
+<div class="text-[10px] uppercase tracking-tighter font-bold" style="color: var(--accent-color, #3bbffa);">Jami Tradelar</div>
+<div id="totalTrades" class="text-2xl font-headline font-black" style="color: #dee5ff;">0</div>
+</div>
+</div>
+</div>
+
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+<div class="glass-panel rounded-2xl p-5">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">Boshlang'ich Balans</div>
+<div id="initialBalance" class="text-xl font-headline font-black text-white">$0</div>
+</div>
+<div class="glass-panel rounded-2xl p-5">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">Joriy Equity</div>
+<div id="analyticsEquity" class="text-xl font-headline font-black text-white">$0</div>
+</div>
+<div class="glass-panel rounded-2xl p-5">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">ROI</div>
+<div id="roiPercent" class="text-xl font-headline font-black">0%</div>
+</div>
+<div class="glass-panel rounded-2xl p-5">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">O'rtacha Hold</div>
+<div id="avgDuration" class="text-xl font-headline font-black text-white">0s</div>
+</div>
+</div>
+
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">Sharpe Ratio</div>
+<div id="sharpeRatio" class="text-lg font-headline font-black" style="color: #dee5ff;">0</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">Profit Factor</div>
+<div id="profitFactor" class="text-lg font-headline font-black" style="color: #dee5ff;">0</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">Max Drawdown</div>
+<div id="maxDrawdown" class="text-lg font-headline font-black" style="color: #dee5ff;">$0</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">Calmar Ratio</div>
+<div id="calmarRatio" class="text-lg font-headline font-black" style="color: #dee5ff;">0</div>
+</div>
+</div>
+
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">O'rtacha Yutug'</div>
+<div id="avgWin" class="text-lg font-headline font-black" style="color: #6bff8f;">$0</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">O'rtacha Zarar</div>
+<div id="avgLoss" class="text-lg font-headline font-black" style="color: #ff716c;">$0</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">Risk/Reward</div>
+<div id="riskReward" class="text-lg font-headline font-black" style="color: #dee5ff;">0</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<div class="text-[10px] uppercase tracking-tighter font-bold mb-2" style="color: #a3aac4;">Expectansiya</div>
+<div id="expectancy" class="text-lg font-headline font-black" style="color: #dee5ff;">$0</div>
+</div>
+</div>
+
+<div class="lg:col-span-4 glass-panel rounded-3xl p-8 relative overflow-hidden group mt-6">
+<div class="absolute top-0 right-0 p-8 transition-opacity" style="opacity: 0.1;">
+<span class="material-symbols-outlined text-8xl">psychology</span>
+</div>
+<div class="relative z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4" style="background-color: rgba(59, 191, 250, 0.1); color: var(--accent-color, #3bbffa);">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+AI Tahlil
+</div>
+<div id="aiScores" class="flex flex-wrap gap-3 mb-4"></div>
+<div id="aiAdvice" class="prose prose-invert max-w-none mb-4" style="color: white;"></div>
+<div id="aiActions" class="space-y-2"></div>
+</div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-6">
+<div class="rounded-3xl p-6 flex flex-col items-center justify-center text-center" style="background-color: #192540;">
+<h4 class="text-sm font-bold uppercase tracking-widest mb-4" style="color: #a3aac4;">Tomon Ustunligi</h4>
+<div class="relative w-32 h-32 mb-4">
+<svg class="w-full h-full transform -rotate-90">
+<circle cx="64" cy="64" fill="transparent" r="56" stroke="#192540" stroke-width="10"></circle>
+<circle id="buyCircle" cx="64" cy="64" fill="transparent" r="56" stroke="#6bff8f" stroke-dasharray="352" stroke-dashoffset="352" stroke-linecap="round" stroke-width="10"></circle>
+<circle id="sellCircle" cx="64" cy="64" fill="transparent" r="56" stroke="#ff716c" stroke-dasharray="352" stroke-dashoffset="352" stroke-linecap="round" stroke-width="10"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span id="dominantSide" class="text-2xl font-headline font-black metric-glow" style="color: #dee5ff;">-</span>
+<span id="dominantPct" class="text-[10px]" style="color: #a3aac4;">Dominant</span>
+</div>
+</div>
+<div class="flex gap-4 text-xs">
+<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full" style="background-color: #6bff8f;"></span> Olish (<span id="buyPct">0</span>%)</div>
+<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full" style="background-color: #ff716c;"></span> Sotish (<span id="sellPct">0</span>%)</div>
+</div>
+</div>
+
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Eng Yaxshi Vaqt</h4>
+<div id="bestHour" class="text-lg font-headline font-bold" style="color: #6bff8f;">-</div>
+<div id="bestHourWr" class="text-xs" style="color: #a3aac4;"></div>
+<div class="mt-4">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Eng Yomon Vaqt</h4>
+<div id="worstHour" class="text-lg font-headline font-bold" style="color: #ff716c;">-</div>
+<div id="worstHourWr" class="text-xs" style="color: #a3aac4;"></div>
+</div>
+</div>
+
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Eng Yaxshi Kun</h4>
+<div id="bestDay" class="text-lg font-headline font-bold" style="color: #6bff8f;">-</div>
+<div id="bestDayWr" class="text-xs" style="color: #a3aac4;"></div>
+<div class="mt-4">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Eng Yomon Kun</h4>
+<div id="worstDay" class="text-lg font-headline font-bold" style="color: #ff716c;">-</div>
+<div id="worstDayWr" class="text-xs" style="color: #a3aac4;"></div>
+</div>
+</div>
+
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Eng Yaxshi Symbol</h4>
+<div id="bestSymbol" class="text-lg font-headline font-bold" style="color: #6bff8f;">-</div>
+<div id="bestSymbolWr" class="text-xs" style="color: #a3aac4;"></div>
+<div class="mt-4">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Eng Yomon Symbol</h4>
+<div id="worstSymbol" class="text-lg font-headline font-bold" style="color: #ff716c;">-</div>
+<div id="worstSymbolWr" class="text-xs" style="color: #a3aac4;"></div>
+</div>
+</div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-4">
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Ketma-ket Yutuqlar</h4>
+<div id="maxConsecutiveWins" class="text-lg font-headline font-bold" style="color: #6bff8f;">0</div>
+<div id="avgWinStreak" class="text-xs" style="color: #a3aac4;"></div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Ketma-ket Mag'lubiyat</h4>
+<div id="maxConsecutiveLosses" class="text-lg font-headline font-bold" style="color: #ff716c;">0</div>
+<div id="avgLossStreak" class="text-xs" style="color: #a3aac4;"></div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Recovery Factor</h4>
+<div id="recoveryFactor" class="text-lg font-headline font-bold" style="color: #dee5ff;">0</div>
+<div class="text-xs mt-1" style="color: #a3aac4;">Yutug' / Zarar nisbati</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Zarardan Keyin Hajm</h4>
+<div id="postLossSize" class="text-lg font-headline font-bold" style="color: #dee5ff;">0</div>
+<div class="text-xs mt-1" style="color: #a3aac4;">O'rtachaga nisbatan</div>
+</div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-4">
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">O'rtacha Pozitsiya</h4>
+<div id="avgSize" class="text-lg font-headline font-bold" style="color: #dee5ff;">0</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Foydali Hajm</h4>
+<div id="profitableSize" class="text-lg font-headline font-bold" style="color: #6bff8f;">0</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Zararl Hajm</h4>
+<div id="unprofitableSize" class="text-lg font-headline font-bold" style="color: #ff716c;">0</div>
+</div>
+<div class="rounded-2xl p-5" style="background-color: #0f1930;">
+<h4 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #a3aac4;">Optimal Hajm</h4>
+<div id="optimalSize" class="text-lg font-headline font-bold" style="color: var(--accent-color, #3bbffa);">0</div>
+</div>
+</div>
+</section>
+
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+<div class="md:col-span-2 rounded-3xl p-6" style="background-color: #0f1930;">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h4 class="font-headline font-bold text-lg" style="color: white;">Symbol Taqsimoti</h4>
+<p class="text-xs" style="color: #a3aac4;">Eng ko'p treyd qilingan symbollar</p>
+</div>
+<span class="material-symbols-outlined" style="color: var(--accent-color, #3bbffa);">pie_chart</span>
+</div>
+<div id="symbolChart" class="space-y-3"></div>
+</div>
+
+<div class="md:col-span-2 rounded-3xl p-6" style="background-color: #0f1930; border: 1px solid rgba(64, 72, 93, 0.1);">
+<h4 class="font-headline font-bold text-lg mb-6" style="color: white;">Symbol Bo'yicha Foyda/Zarar</h4>
+<div id="pnlBySymbol" class="space-y-3"></div>
+</div>
+</section>
+
+<section class="mt-12">
+<h3 class="font-headline text-2xl font-bold mb-6" style="color: white;">Asosiy Tushunchalar</h3>
+<div id="insights" class="space-y-4"></div>
+</section>
+
+<section class="mt-12">
+<h3 class="font-headline text-2xl font-bold mb-6" style="color: white;">Izohlar Tahlili</h3>
+<div id="notesAnalysis" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4"></div>
+<div id="notesWords" class="flex flex-wrap gap-2 mb-4"></div>
+</section>
+
+<section class="mt-12 glass-panel rounded-3xl p-8 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 transition-opacity" style="opacity: 0.05;">
+<span class="material-symbols-outlined text-8xl">summarize</span>
+</div>
+<div class="relative z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-6" style="background-color: rgba(255, 177, 72, 0.1); color: #ffb148;">
+<span class="material-symbols-outlined text-sm">article</span>
+Umumiy Xulosa
+</div>
+<div id="summaryText" class="prose prose-invert max-w-none leading-relaxed" style="color: #dee5ff;">
+Tahlil yuklanmoqda...
+</div>
+</div>
+</section>
+
+<section class="mt-12">
+<h3 class="font-headline text-2xl font-bold mb-6" style="color: white;">So'nggi Tradelar Tahlili</h3>
+<div id="recentAnalysis" class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead>
+<tr style="color: #a3aac4;" class="text-left">
+<th class="pb-4 pr-4">Symbol</th>
+<th class="pb-4 pr-4">Tomon</th>
+<th class="pb-4 pr-4">Kirish</th>
+<th class="pb-4 pr-4">Chiqish</th>
+<th class="pb-4 pr-4">Foyda</th>
+<th class="pb-4">Sana</th>
+</tr>
+</thead>
+<tbody id="tradesTable"></tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<div class="fixed bottom-[-10%] right-[-10%] w-[30%] h-[30%] rounded-full blur-[100px] pointer-events-none" style="background-color: rgba(107, 255, 143, 0.05); z-index: -1;"></div>
+
+<script>
+const API_BASE = window.location.origin;
+
+function applyAccentColor() {
+    const settings = JSON.parse(localStorage.getItem('gigimon_settings') || '{}');
+    if (settings.accentColor) {
+        document.documentElement.style.setProperty('--accent-color', settings.accentColor);
+        document.documentElement.style.setProperty('--accent-color-dark', settings.accentColorDark || settings.accentColor);
+    }
+}
+applyAccentColor();
+
+const token = localStorage.getItem('gigimon_token');
+
+if (!token) {
+    window.location.href = '/';
+}
+
+async function checkUnreadCount() {
+    try {
+        const res = await fetch(`${API_BASE}/notifications/unread-count`, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 401) { localStorage.removeItem('gigimon_token'); window.location.href = '/'; return; }
+        if (res.ok) {
+            const data = await res.json();
+            updateBadge(data.count);
+        }
+    } catch (err) {}
+}
+function updateBadge(count) {
+    const badge = document.getElementById('bell-badge');
+    if (badge) {
+        if (count > 0) {
+            badge.textContent = count > 99 ? '99+' : count;
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+        } else {
+            badge.classList.add('hidden');
+            badge.classList.remove('flex');
+        }
+    }
+}
+checkUnreadCount();
+setInterval(checkUnreadCount, 10000);
+
+async function loadUserInfo() {
+    try {
+        const userRes = await fetch(`${API_BASE}/users/me`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (userRes.ok) {
+            const user = await userRes.json();
+            const displayName = user.display_name || user.username || user.email || 'Treyder';
+            document.querySelector('aside p.text-xs').textContent = displayName;
+            const savedAvatar = localStorage.getItem('gigimon_avatar');
+            const settings = JSON.parse(localStorage.getItem('gigimon_settings') || '{}');
+            const topAvatarImg = document.getElementById('top-avatar-img');
+            if (topAvatarImg) {
+                if (savedAvatar || settings.avatar) {
+                    topAvatarImg.src = savedAvatar || settings.avatar;
+                } else {
+                    topAvatarImg.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(displayName) + '&background=192540&color=3bbffa&size=64';
+                }
+            }
+        }
+    } catch (err) {
+        console.error('Error loading user info:', err);
+    }
+}
+
+function fmt(val) {
+    if (val === null || val === undefined) return '0';
+    if (typeof val === 'number') return val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return val;
+}
+
+function fmtPct(val) {
+    if (val === null || val === undefined || val === 0) return '0%';
+    return (val >= 0 ? '+' : '') + val.toFixed(1) + '%';
+}
+
+function color(val, greenIf = true) {
+    if (val === null || val === undefined) return '#a3aac4';
+    if (typeof val === 'number') {
+        if (val > 0) return greenIf ? '#6bff8f' : '#ff716c';
+        if (val < 0) return greenIf ? '#ff716c' : '#6bff8f';
+    }
+    return '#dee5ff';
+}
+
+async function loadAnalytics() {
+    try {
+        const res = await fetch(`${API_BASE}/analytics/analyze`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.detail || 'Failed to load analytics');
+        }
+        const data = await res.json();
+
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('content').classList.remove('hidden');
+
+        renderMetrics(data);
+        renderPatterns(data);
+        renderSequence(data);
+        renderSizing(data);
+        renderAI(data);
+        renderCharts(data);
+        renderNotesAnalysis(data);
+        renderSummary(data);
+        renderInsights(data);
+        renderRecentTrades(data);
+    } catch (err) {
+        console.error('Error loading analytics:', err);
+        document.getElementById('loading').innerHTML = `
+            <div class="text-center" style="color: #a3aac4;">
+                <p class="mb-2">Treiching ma'lumotlari mavjud emas</p>
+                <a href="/add-trade.html" class="text-[var(--accent-color, #3bbffa)] underline">Birinchi trade qo'shing</a>
+            </div>
+        `;
+    }
+}
+
+function renderMetrics(data) {
+    const m = data.metrics || {};
+    document.getElementById('totalTrades').textContent = data.trade_count || 0;
+    document.getElementById('totalPnL').textContent = (m.total_pnl >= 0 ? '+' : '') + '$' + fmt(m.total_pnl);
+    document.getElementById('totalPnL').style.color = color(m.total_pnl);
+    document.getElementById('winRate').textContent = (m.win_rate || 0) + '%';
+    document.getElementById('winRate').style.color = (m.win_rate || 0) >= 50 ? '#6bff8f' : '#ff716c';
+
+    document.getElementById('initialBalance').textContent = '$' + fmt(data.initial_balance);
+    document.getElementById('analyticsEquity').textContent = (data.current_equity >= 0 ? '+' : '') + '$' + fmt(data.current_equity);
+    document.getElementById('analyticsEquity').style.color = color(data.current_equity, data.current_equity >= (data.initial_balance || 0));
+    document.getElementById('roiPercent').textContent = fmtPct(data.roi);
+    document.getElementById('roiPercent').style.color = color(data.roi);
+    document.getElementById('avgDuration').textContent = (m.avg_duration_hours || 0) + ' soat';
+
+    document.getElementById('sharpeRatio').textContent = (m.sharpe_ratio || 0) > 0 ? m.sharpe_ratio.toFixed(2) : '0';
+    document.getElementById('sharpeRatio').style.color = (m.sharpe_ratio || 0) >= 1 ? '#6bff8f' : (m.sharpe_ratio || 0) < 0 ? '#ff716c' : '#dee5ff';
+    document.getElementById('profitFactor').textContent = m.profit_factor !== null && m.profit_factor !== undefined ? m.profit_factor.toFixed(2) : '-';
+    document.getElementById('profitFactor').style.color = (m.profit_factor || 0) >= 1.5 ? '#6bff8f' : (m.profit_factor || 0) < 1 && m.profit_factor !== null ? '#ff716c' : '#dee5ff';
+    document.getElementById('maxDrawdown').textContent = '$' + fmt(m.max_drawdown);
+    document.getElementById('maxDrawdown').style.color = (m.max_drawdown || 0) > 0 ? '#ff716c' : '#a3aac4';
+    document.getElementById('calmarRatio').textContent = (m.calmar_ratio || 0) > 0 ? m.calmar_ratio.toFixed(2) : '0';
+    document.getElementById('calmarRatio').style.color = (m.calmar_ratio || 0) >= 1 ? '#6bff8f' : '#dee5ff';
+
+    document.getElementById('avgWin').textContent = '$' + fmt(m.avg_win);
+    document.getElementById('avgLoss').textContent = '$' + fmt(m.avg_loss);
+    document.getElementById('riskReward').textContent = '1:' + fmt(m.risk_reward_ratio);
+    document.getElementById('riskReward').style.color = (m.risk_reward_ratio || 0) >= 1.5 ? '#6bff8f' : '#dee5ff';
+    document.getElementById('expectancy').textContent = (m.expectancy >= 0 ? '+' : '') + '$' + fmt(m.expectancy);
+    document.getElementById('expectancy').style.color = color(m.expectancy);
+}
+
+function renderPatterns(data) {
+    const p = data.patterns || {};
+    if (p.best_hour) {
+        document.getElementById('bestHour').textContent = p.best_hour.hour || '-';
+        document.getElementById('bestHourWr').textContent = p.best_hour.win_rate + "% g'alaba";
+    }
+    if (p.worst_hour) {
+        document.getElementById('worstHour').textContent = p.worst_hour.hour || '-';
+        document.getElementById('worstHourWr').textContent = p.worst_hour.win_rate + "% g'alaba";
+    }
+    if (p.best_day) {
+        document.getElementById('bestDay').textContent = p.best_day.day || '-';
+        document.getElementById('bestDayWr').textContent = p.best_day.win_rate + "% g'alaba";
+    }
+    if (p.worst_day) {
+        document.getElementById('worstDay').textContent = p.worst_day.day || '-';
+        document.getElementById('worstDayWr').textContent = p.worst_day.win_rate + "% g'alaba";
+    }
+    if (p.best_symbol) {
+        document.getElementById('bestSymbol').textContent = p.best_symbol.symbol || '-';
+        document.getElementById('bestSymbolWr').textContent = p.best_symbol.win_rate + "% g'alaba";
+    }
+    if (p.worst_symbol) {
+        document.getElementById('worstSymbol').textContent = p.worst_symbol.symbol || '-';
+        document.getElementById('worstSymbolWr').textContent = p.worst_symbol.win_rate + "% g'alaba";
+    }
+
+    const buy = p.buy || {};
+    const sell = p.sell || {};
+    const total = (buy.count || 0) + (sell.count || 0);
+    const buyPct = total > 0 ? Math.round((buy.count || 0) / total * 100) : 0;
+    const sellPct = 100 - buyPct;
+    document.getElementById('buyPct').textContent = buyPct;
+    document.getElementById('sellPct').textContent = sellPct;
+    document.getElementById('buyCircle').setAttribute('stroke-dashoffset', 352 - (352 * buyPct / 100));
+    document.getElementById('sellCircle').setAttribute('stroke-dashoffset', 352 - (352 * sellPct / 100));
+    document.getElementById('dominantSide').textContent = buyPct > sellPct ? 'OLISH' : 'SOTISH';
+    document.getElementById('dominantPct').textContent = 'Ustunlik ' + Math.max(buyPct, sellPct) + '%';
+}
+
+function renderSequence(data) {
+    const s = data.sequence || {};
+    document.getElementById('maxConsecutiveWins').textContent = s.max_consecutive_wins || 0;
+    document.getElementById('avgWinStreak').textContent = "O'rtacha: " + (s.avg_win_streak || 0) + ' ta';
+    document.getElementById('maxConsecutiveLosses').textContent = s.max_consecutive_losses || 0;
+    document.getElementById('avgLossStreak').textContent = "O'rtacha: " + (s.avg_loss_streak || 0) + ' ta';
+    document.getElementById('recoveryFactor').textContent = (s.recovery_factor || 0).toFixed(2);
+    document.getElementById('recoveryFactor').style.color = (s.recovery_factor || 0) >= 1.5 ? '#6bff8f' : (s.recovery_factor || 0) < 1 ? '#ff716c' : '#dee5ff';
+    document.getElementById('postLossSize').textContent = (s.post_loss_size_ratio || 0).toFixed(2) + 'x';
+    document.getElementById('postLossSize').style.color = (s.post_loss_size_ratio || 0) > 1.2 ? '#ff716c' : '#6bff8f';
+}
+
+function renderSizing(data) {
+    const sz = data.sizing || {};
+    document.getElementById('avgSize').textContent = fmt(sz.avg_size);
+    document.getElementById('profitableSize').textContent = fmt(sz.avg_profitable_size);
+    document.getElementById('unprofitableSize').textContent = fmt(sz.avg_unprofitable_size);
+    document.getElementById('optimalSize').textContent = fmt(sz.optimal_size);
+    if (sz.size_pnl_correlation && Math.abs(sz.size_pnl_correlation) > 0.3) {
+        document.getElementById('optimalSize').parentElement.innerHTML +=
+            '<div class="text-xs mt-1" style="color: #a3aac4;">Korrelyatsiya: ' + sz.size_pnl_correlation.toFixed(2) + '</div>';
+    }
+}
+
+function renderNotesAnalysis(data) {
+    const n = data.notes_analysis || {};
+    const container = document.getElementById('notesAnalysis');
+
+    if (!n.total) {
+        container.innerHTML = '<div class="text-center py-4 md:col-span-4" style="color: #a3aac4;">Izohlar mavjud emas</div>';
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="rounded-2xl p-5" style="background-color: #0f1930;">
+            <div class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #a3aac4;">Izohlar</div>
+            <div class="text-2xl font-headline font-bold" style="color: #dee5ff;">${n.with_notes}/${n.total}</div>
+            <div class="text-xs" style="color: ${n.no_notes_ratio > 30 ? '#ff716c' : '#a3aac4'};">Izohsiz: ${n.no_notes_ratio}%</div>
+        </div>
+        <div class="rounded-2xl p-5" style="background-color: #0f1930;">
+            <div class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #a3aac4;">Ton</div>
+            <div class="text-2xl font-headline font-bold" style="color: #6bff8f;">${n.positive_ratio}%</div>
+            <div class="text-xs" style="color: #a3aac4;">Ijobiy izohlar</div>
+        </div>
+        <div class="rounded-2xl p-5" style="background-color: #0f1930;">
+            <div class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #a3aac4;">Strategiyalar</div>
+            <div class="text-lg font-headline font-bold" style="color: #dee5ff;">${Object.keys(n.strategies || {}).length || 0}</div>
+            <div class="text-xs" style="color: #a3aac4;">Tur xil strategiya</div>
+        </div>
+        <div class="rounded-2xl p-5" style="background-color: #0f1930;">
+            <div class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #a3aac4;">Holat</div>
+            <div class="text-lg font-headline font-bold" style="color: #dee5ff;">${Object.keys(n.emotions || {}).length || 0}</div>
+            <div class="text-xs" style="color: #a3aac4;">Tur xil kayfiyat</div>
+        </div>
+    `;
+
+    const wordsContainer = document.getElementById('notesWords');
+    const words = n.common_words || [];
+    if (words.length > 0) {
+        wordsContainer.innerHTML = '<div class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #a3aac4;">Eng ko\'p qo\'llanilgan so\'zlar</div>' +
+            words.map(([word, count]) =>
+                `<span class="px-3 py-1 rounded-full text-xs" style="background-color: #192540; color: #a3aac4;">${word} (${count})</span>`
+            ).join('');
+    }
+
+    const strategies = n.strategies;
+    const emotions = n.emotions;
+    if (Object.keys(strategies || {}).length > 0 || Object.keys(emotions || {}).length > 0) {
+        let extraHtml = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">';
+        if (Object.keys(strategies).length > 0) {
+            extraHtml += '<div class="rounded-2xl p-5" style="background-color: #0f1930;"><div class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #ffb148;">Strategiyalar</div>';
+            Object.entries(strategies).sort((a, b) => b[1] - a[1]).slice(0, 5).forEach(([s, c]) => {
+                extraHtml += '<div class="flex justify-between py-1 text-sm"><span style="color: #dee5ff;">' + s + '</span><span style="color: #a3aac4;">' + c + 'x</span></div>';
+            });
+            extraHtml += '</div>';
+        }
+        if (Object.keys(emotions).length > 0) {
+            extraHtml += '<div class="rounded-2xl p-5" style="background-color: #0f1930;"><div class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #3bbffa;">Psixologiya</div>';
+            Object.entries(emotions).sort((a, b) => b[1] - a[1]).slice(0, 5).forEach(([e, c]) => {
+                const isPositive = ['Patient', 'Confident', 'Calm', 'Disciplined', 'Lucky'].includes(e);
+                extraHtml += '<div class="flex justify-between py-1 text-sm"><span style="color: ' + (isPositive ? '#6bff8f' : '#ff716c') + ';">' + e + '</span><span style="color: #a3aac4;">' + c + 'x</span></div>';
+            });
+            extraHtml += '</div>';
+        }
+        extraHtml += '</div>';
+        wordsContainer.insertAdjacentHTML('afterend', extraHtml);
+    }
+}
+
+function renderSummary(data) {
+    const summary = data.summary || '';
+    const el = document.getElementById('summaryText');
+    if (summary) {
+        el.innerHTML = summary.replace(/\*\*([^*]+)\*\*/g, '<strong style="color: #ffb148;">$1</strong>').replace(/\n/g, '<br>');
+    } else {
+        el.innerHTML = '<span style="color: #a3aac4;">Tahlil natijalari asosida xulosa tayyorlanmoqda...</span>';
+    }
+}
+
+function renderAI(data) {
+    const ai = data.ai || {};
+    const scoresContainer = document.getElementById('aiScores');
+    const scores = ai.scores || {};
+    const scoreLabels = {
+        discipline: 'Intizom',
+        risk_management: 'Risk Boshqaruvi',
+        consistency: 'Barqarorlik',
+        pattern_recognition: 'Pattern Aniqlash',
+        sizing: 'Pozitsiya Hajmi'
+    };
+    scoresContainer.innerHTML = Object.entries(scoreLabels).map(([key, label]) => {
+        const val = scores[key] || 0;
+        return `<div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold" style="background-color: rgba(59, 191, 250, 0.1); color: var(--accent-color, #3bbffa);">
+            <span>${label}</span>
+            <span style="color: ${val >= 70 ? '#6bff8f' : val >= 40 ? '#ffb148' : '#ff716c'};">${val}/100</span>
+        </div>`;
+    }).join('');
+
+    const advice = document.getElementById('aiAdvice');
+    if (ai.advice_markdown) {
+        advice.innerHTML = ai.advice_markdown.replace(/\n/g, '<br>');
+    } else {
+        advice.innerHTML = '<p style="color: #a3aac4;">AI tahlil uchun API kaliti sozlanmagan. Sozlamalar > AI Integration bo\'limida kalitni o\'rnating.</p>';
+    }
+
+    const actionsContainer = document.getElementById('aiActions');
+    const actions = ai.actions || [];
+    if (actions.length > 0) {
+        actionsContainer.innerHTML = '<div class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #ffb148;">Tavsiyalar</div>' +
+            actions.map(a => `
+                <div class="flex items-start gap-2 p-3 rounded-lg" style="background-color: #192540;">
+                    <span class="material-symbols-outlined text-sm mt-0.5" style="color: #ffb148;">check_circle</span>
+                    <span class="text-sm" style="color: #dee5ff;">${a}</span>
+                </div>
+            `).join('');
+    }
+}
+
+function renderCharts(data) {
+    const symbols = data.symbols || [];
+    if (symbols.length === 0) {
+        document.getElementById('symbolChart').innerHTML = '<div class="text-center py-4" style="color: #a3aac4;">Ma\'lumot yo\'q</div>';
+        document.getElementById('pnlBySymbol').innerHTML = '';
+        return;
+    }
+
+    const maxCount = symbols.length > 0 ? symbols[0].count : 1;
+
+    const chartContainer = document.getElementById('symbolChart');
+    chartContainer.innerHTML = symbols.slice(0, 5).map(s => {
+        const pct = Math.round((s.count / maxCount) * 100);
+        const wr = s.count > 0 ? Math.round((s.wins / s.count) * 100) : 0;
+        return `
+            <div class="flex items-center gap-3">
+                <span class="w-16 text-sm font-medium truncate">${s.symbol}</span>
+                <div class="flex-1 h-6 rounded" style="background-color: #192540;">
+                    <div class="h-full rounded" style="width: ${pct}%; background-color: ${wr >= 50 ? '#6bff8f' : 'var(--accent-color, #3bbffa)'};"></div>
+                </div>
+                <span class="w-12 text-right text-xs" style="color: #a3aac4;">${s.count}</span>
+                <span class="w-12 text-right text-xs" style="color: ${wr >= 50 ? '#6bff8f' : '#ff716c'};">${wr}%</span>
+            </div>
+        `;
+    }).join('');
+
+    const pnlContainer = document.getElementById('pnlBySymbol');
+    const pnlSorted = [...symbols].sort((a, b) => Math.abs(b.pnl) - Math.abs(a.pnl)).slice(0, 5);
+    pnlContainer.innerHTML = pnlSorted.map(s => `
+        <div class="flex items-center justify-between p-3 rounded-lg" style="background-color: #192540;">
+            <span class="font-medium">${s.symbol}</span>
+            <span class="font-bold" style="color: ${s.pnl >= 0 ? '#6bff8f' : '#ff716c'};">
+                ${s.pnl >= 0 ? '+' : ''}$${fmt(s.pnl)}
+            </span>
+        </div>
+    `).join('');
+}
+
+function renderInsights(data) {
+    const m = data.metrics || {};
+    const p = data.patterns || {};
+    const s = data.sequence || {};
+    const container = document.getElementById('insights');
+    const insights = [];
+
+    if (m.expectancy > 0) {
+        insights.push({
+            icon: 'calculate', color: '#6bff8f', bg: 'rgba(107, 255, 143, 0.2)',
+            title: 'Pozitiv Expectansiya',
+            desc: `Har bir trade uchun o'rtacha $${fmt(m.expectancy)} kutish mumkin. Risk/Reward: 1:${fmt(m.risk_reward_ratio)}`
+        });
+    } else if (m.expectancy < 0) {
+        insights.push({
+            icon: 'warning', color: '#ff716c', bg: 'rgba(255, 113, 108, 0.2)',
+            title: 'Negativ Expectansiya',
+            desc: `Har bir trade uchun o'rtacha $${fmt(Math.abs(m.expectancy))} yo'qotish. Strategiyani qayta ko'rib chiqing.`
+        });
+    }
+
+    if (m.sharpe_ratio >= 1) {
+        insights.push({
+            icon: 'trending_up', color: '#6bff8f', bg: 'rgba(107, 255, 143, 0.2)',
+            title: 'Yaxshi Sharpe Ratio',
+            desc: `${m.sharpe_ratio.toFixed(2)} Sharpe risk-return nisbatingiz yaxshi.`
+        });
+    } else if (m.sharpe_ratio < 0) {
+        insights.push({
+            icon: 'trending_down', color: '#ff716c', bg: 'rgba(255, 113, 108, 0.2)',
+            title: 'Past Sharpe Ratio',
+            desc: `${m.sharpe_ratio.toFixed(2)} Sharpe - risk juda yuqori. Pozitsiya hajmini kamaytirishni o'ylab ko'ring.`
+        });
+    }
+
+    if (p.best_hour?.hour) {
+        insights.push({
+            icon: 'schedule', color: '#3bbffa', bg: 'rgba(59, 191, 250, 0.2)',
+            title: 'Eng Yaxshi Vaqt',
+            desc: `${p.best_hour.hour} da ${p.best_hour.win_rate}% g'alaba - shu vaqtda trade qilish samarali.`
+        });
+    }
+
+    if (s.max_consecutive_losses >= 3) {
+        insights.push({
+            icon: 'warning', color: '#ff716c', bg: 'rgba(255, 113, 108, 0.2)',
+            title: 'Ketma-ket Mag\'lubiyat',
+            desc: `${s.max_consecutive_losses} ta ketma-ket mag'lubiyat. ${s.max_consecutive_losses >= 5 ? '3+ mag\'lubiyatdan keyin trade to\'xtatish qoidasini joriy qiling.' : '2+ mag\'lubiyatdan keyin pozitsiya hajmini kamaytiring.'}`
+        });
+    }
+
+    if (s.post_loss_size_ratio > 1.2) {
+        insights.push({
+            icon: 'trending_up', color: '#ff716c', bg: 'rgba(255, 113, 108, 0.2)',
+            title: 'Mag\'lubiyatdan Keyin Hajm Oshgan',
+            desc: `Mag'lubiyatdan keyin ${(s.post_loss_size_ratio * 100).toFixed(0)}% kattaroq hajmda trade ochasiz. Bu "tilt" belgisi bo'lishi mumkin.`
+        });
+    }
+
+    if (m.profit_factor !== null && m.profit_factor < 1) {
+        insights.push({
+            icon: 'error', color: '#ff716c', bg: 'rgba(255, 113, 108, 0.2)',
+            title: 'Profit Factor 1 dan Past',
+            desc: `${m.profit_factor.toFixed(2)} - yo'qotishlaringiz foydadan ko'p. Stop-loss va take-profit strategiyasini qayta ko'rib chiqing.`
+        });
+    }
+
+    if (m.avg_duration_hours && m.avg_duration_hours > 0) {
+        const label = m.avg_duration_hours < 1 ? 'Tezkor trade' : m.avg_duration_hours > 48 ? 'Uzoq muddatli' : 'O\'rtacha';
+        insights.push({
+            icon: 'timer', color: '#ffb148', bg: 'rgba(255, 177, 72, 0.2)',
+            title: 'Hold Vaqti',
+            desc: `${m.avg_duration_hours.toFixed(1)} soat. ${label} trading uslubi.`
+        });
+    }
+
+    if (m.avg_win > 0 && m.avg_loss > 0) {
+        const rr = m.avg_win / m.avg_loss;
+        if (rr >= 2) {
+            insights.push({
+                icon: 'emoji_events', color: '#6bff8f', bg: 'rgba(107, 255, 143, 0.2)',
+                title: 'A\'lo Risk/Reward',
+                desc: `Risk/Reward 1:${rr.toFixed(1)} - yutuqlaringiz zararlardan ${rr.toFixed(1)}x katta.`
+            });
+        }
+    }
+
+    container.innerHTML = insights.map(ins => `
+        <div class="p-6 rounded-2xl flex items-center justify-between group transition-all" style="background-color: #0f1930;">
+            <div class="flex items-center gap-6">
+                <div class="p-3 rounded-full" style="background-color: ${ins.bg};">
+                    <span class="material-symbols-outlined" style="color: ${ins.color};">${ins.icon}</span>
+                </div>
+                <div>
+                    <div class="font-bold" style="color: #dee5ff;">${ins.title}</div>
+                    <div class="text-sm" style="color: #a3aac4;">${ins.desc}</div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderRecentTrades(data) {
+    const tbody = document.getElementById('tradesTable');
+    tbody.innerHTML = '';
+    const trades = data.recent_trades || [];
+    if (trades.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4" style="color: #a3aac4;">Tradelar mavjud emas</td></tr>';
+        return;
+    }
+    trades.forEach(t => {
+        const isProfit = t.pnl >= 0;
+        const sideLabel = t.side === 'buy' ? 'Buy' : 'Sell';
+        const sideColor = t.side === 'buy' ? '#3bbffa' : '#ff6b8a';
+        const exitPrice = t.exit_price || '-';
+        const tr = document.createElement('tr');
+        tr.className = 'border-t border-[#1e2d4a]';
+        tr.innerHTML = `
+            <td class="py-3 pr-4 font-medium">${t.symbol}</td>
+            <td class="py-3 pr-4"><span class="px-2 py-0.5 rounded text-xs font-bold" style="background: ${sideColor}20; color: ${sideColor};">${sideLabel}</span></td>
+            <td class="py-3 pr-4">${t.price}</td>
+            <td class="py-3 pr-4">${exitPrice}</td>
+            <td class="py-3 pr-4 font-medium" style="color: ${isProfit ? '#6bff8f' : '#ff6b8a'};">${isProfit ? '+' : ''}$${t.pnl}</td>
+            <td class="py-3" style="color: #a3aac4;">${t.executed_at}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function logout() {
+    localStorage.removeItem('gigimon_token');
+    window.location.href = '/';
+}
+
+loadUserInfo();
+loadAnalytics();
+</script>
+<script src="/ai-assistant.js"></script>
+</body>
+</html>
