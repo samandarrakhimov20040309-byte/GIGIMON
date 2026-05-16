@@ -13,4 +13,3 @@ bcrypt<4
 apscheduler>=3.10.4
 tenacity>=9.0.0
 openpyxl>=3.1.5
-MetaTrader5>=5.0.45
